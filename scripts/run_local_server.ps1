@@ -1,69 +1,64 @@
-# Simple PowerShell HTTP Server to host the EV Analytics Dashboard locally
-param(
-    [int]$Port = 8080
-)
+# Resilient Local Web Server for VOLTIX EV Analytics Platform
+param([int]$Port = 8080)
 
 $root = Split-Path -Parent $PSScriptRoot
 Set-Location $root
 
-Write-Host "==========================================================" -ForegroundColor Cyan
-Write-Host "   Electric Vehicle (EV) Industry Analytics Dashboard   " -ForegroundColor Green
-Write-Host "==========================================================" -ForegroundColor Cyan
-Write-Host "Starting local web server at: http://localhost:$Port" -ForegroundColor Yellow
-Write-Host "Press Ctrl+C to stop the server at any time." -ForegroundColor DarkGray
-Write-Host "Serving files from: $root" -ForegroundColor Gray
+Write-Host "Starting VOLTIX Server on http://localhost:$Port" -ForegroundColor Cyan
 
 $listener = New-Object System.Net.HttpListener
 $listener.Prefixes.Add("http://localhost:$Port/")
 try {
     $listener.Start()
 } catch {
-    Write-Warning "Port $Port might be in use, trying 8081..."
     $Port = 8081
     $listener = New-Object System.Net.HttpListener
     $listener.Prefixes.Add("http://localhost:$Port/")
     $listener.Start()
 }
+Write-Host "Listening at: http://localhost:$Port/" -ForegroundColor Green
 
-Write-Host "Opening default browser..." -ForegroundColor Green
-Start-Process "http://localhost:$Port/index.html"
-
-try {
-    while ($listener.IsListening) {
+while ($listener.IsListening) {
+    try {
         $context = $listener.GetContext()
-        $request = $context.Request
-        $response = $context.Response
+        $req = $context.Request
+        $res = $context.Response
 
-        $localPath = $request.Url.LocalPath.TrimStart('/')
-        if ([string]::IsNullOrWhiteSpace($localPath)) {
-            $localPath = "index.html"
-        }
-        $filePath = Join-Path $root $localPath
+        $res.AddHeader('Access-Control-Allow-Origin', '*')
+        $res.AddHeader('Cache-Control', 'no-cache')
 
-        if (Test-Path $filePath -PathType Leaf) {
-            $ext = [System.IO.Path]::GetExtension($filePath).ToLower()
-            $contentType = switch ($ext) {
-                ".html" { "text/html; charset=utf-8" }
-                ".css"  { "text/css; charset=utf-8" }
-                ".js"   { "application/javascript; charset=utf-8" }
-                ".json" { "application/json; charset=utf-8" }
-                ".csv"  { "text/csv; charset=utf-8" }
-                ".svg"  { "image/svg+xml" }
-                ".png"  { "image/png" }
-                ".jpg"  { "image/jpeg" }
-                default { "application/octet-stream" }
+        $relPath = $req.Url.LocalPath.TrimStart('/')
+        if ([string]::IsNullOrWhiteSpace($relPath)) { $relPath = 'index.html' }
+        $fullPath = Join-Path $root $relPath
+
+        if (Test-Path $fullPath -PathType Leaf) {
+            $ext = [System.IO.Path]::GetExtension($fullPath).ToLower()
+            $mime = switch ($ext) {
+                '.html' { 'text/html; charset=utf-8' }
+                '.css'  { 'text/css; charset=utf-8' }
+                '.js'   { 'application/javascript; charset=utf-8' }
+                '.json' { 'application/json; charset=utf-8' }
+                '.csv'  { 'text/csv; charset=utf-8' }
+                '.svg'  { 'image/svg+xml' }
+                '.png'  { 'image/png' }
+                default { 'application/octet-stream' }
             }
-            $response.ContentType = $contentType
-            $bytes = [System.IO.File]::ReadAllBytes($filePath)
-            $response.ContentLength64 = $bytes.Length
-            $response.OutputStream.Write($bytes, 0, $bytes.Length)
+            $res.ContentType = $mime
+            $buf = [System.IO.File]::ReadAllBytes($fullPath)
+            $res.ContentLength64 = $buf.Length
+            if ($req.HttpMethod -ne 'HEAD') {
+                $res.OutputStream.Write($buf, 0, $buf.Length)
+            }
         } else {
-            $response.StatusCode = 404
-            $msg = [System.Text.Encoding]::UTF8.GetBytes("404 Not Found")
-            $response.OutputStream.Write($msg, 0, $msg.Length)
+            $res.StatusCode = 404
+            $err = [System.Text.Encoding]::UTF8.GetBytes('404 Not Found')
+            $res.ContentLength64 = $err.Length
+            if ($req.HttpMethod -ne 'HEAD') {
+                $res.OutputStream.Write($err, 0, $err.Length)
+            }
         }
-        $response.Close()
+        $res.Close()
+    } catch {
+        try { if ($context.Response) { $context.Response.Close() } } catch {}
     }
-} finally {
-    $listener.Stop()
 }

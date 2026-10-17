@@ -240,9 +240,12 @@
     <section class="view-pane active" id="tab-overview">
       <div class="analytics-grid">
         <div class="analytics-card">
-          <div class="card-title-group">
-            <h3>Annual Sales Volume by Vehicle Category</h3>
-            <p>Annual market volume breakdown across SUVs, Sedans, Hatchbacks, Two-Wheelers, Trucks & Buses</p>
+          <div class="card-top-bar">
+            <div class="card-title-group">
+              <h3>Annual Sales Volume by Vehicle Category</h3>
+              <p>Annual market volume breakdown across SUVs, Sedans, Hatchbacks, Two-Wheelers, Trucks & Buses</p>
+            </div>
+            <span class="badge-chem badge-lfp">SUV Leads (45%+)</span>
           </div>
           <div class="chart-viewport">
             <canvas id="chartSalesByCategory"></canvas>
@@ -250,9 +253,12 @@
         </div>
 
         <div class="analytics-card">
-          <div class="card-title-group">
-            <h3>Automaker Global Market Share</h3>
-            <p>Delivery volume distribution among top international automotive conglomerates</p>
+          <div class="card-top-bar">
+            <div class="card-title-group">
+              <h3>Automaker Global Market Share</h3>
+              <p>Delivery volume distribution among top international automotive conglomerates</p>
+            </div>
+            <span class="badge-chem badge-nmc">Top OEM: Tesla & BYD</span>
           </div>
           <div class="chart-viewport">
             <canvas id="chartMarketShare"></canvas>
@@ -260,9 +266,12 @@
         </div>
 
         <div class="analytics-card">
-          <div class="card-title-group">
-            <h3>Battery Chemistry Adoption Trajectory (2021–2026)</h3>
-            <p>Technological shift from traditional NMC/NCA towards LFP, Sodium-Ion, and Next-Gen Solid-State</p>
+          <div class="card-top-bar">
+            <div class="card-title-group">
+              <h3>Battery Chemistry Adoption Trajectory (2021–2026)</h3>
+              <p>Technological shift from traditional NMC/NCA towards LFP, Sodium-Ion, and Next-Gen Solid-State</p>
+            </div>
+            <span class="badge-chem badge-solid">LFP & Solid-State Rise</span>
           </div>
           <div class="chart-viewport">
             <canvas id="chartTechAdoption"></canvas>
@@ -270,9 +279,12 @@
         </div>
 
         <div class="analytics-card">
-          <div class="card-title-group">
-            <h3>Geographical Production & Gigafactory Concentration</h3>
-            <p>Annual vehicle manufacturing and cell assembly distribution by country of origin</p>
+          <div class="card-top-bar">
+            <div class="card-title-group">
+              <h3>Geographical Production & Gigafactory Concentration</h3>
+              <p>Annual vehicle manufacturing and cell assembly distribution by country of origin</p>
+            </div>
+            <span class="badge-chem badge-lfp" style="background: rgba(0, 240, 255, 0.18); color: #38bdf8;">China & EU Core Hubs</span>
           </div>
           <div class="chart-viewport">
             <canvas id="chartGeoDistribution"></canvas>
@@ -620,6 +632,11 @@
 
   <!-- Scripts -->
   <script src="js/chart.min.js"></script>
+  <script>
+    if (typeof Chart === 'undefined') {
+      document.write('<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"><\/script>');
+    }
+  </script>
   <script src="js/ev_data.js"></script>
   <script src="js/charts.js"></script>
   <script src="js/scenarios.js"></script>

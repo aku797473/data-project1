@@ -170,6 +170,11 @@
         sortAndRenderTable();
       });
     });
+
+    // Continuous responsive chart re-rendering on window resize / orientation change
+    window.addEventListener('resize', debounce(() => {
+      triggerRenderActiveTabCharts();
+    }, 200));
   }
 
   function loadDataset() {
