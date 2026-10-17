@@ -93,7 +93,8 @@
     el.tabButtons.forEach(btn => {
       btn.addEventListener('click', () => {
         const targetTab = btn.getAttribute('data-tab');
-        switchTab(targetTab);
+        const isHeaderNav = btn.classList.contains('header-nav-link');
+        switchTab(targetTab, isHeaderNav);
       });
     });
 
@@ -281,7 +282,7 @@
     if (el.kpiTotalModels) el.kpiTotalModels.textContent = data.length.toLocaleString() + ' Models';
   }
 
-  function switchTab(tabId) {
+  function switchTab(tabId, shouldScroll = false) {
     state.activeTab = tabId;
 
     el.tabButtons.forEach(btn => {
@@ -291,6 +292,13 @@
     el.tabPanes.forEach(pane => {
       pane.classList.toggle('active', pane.id === tabId);
     });
+
+    if (shouldScroll) {
+      const pane = document.getElementById(tabId);
+      if (pane) {
+        pane.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
 
     // Re-render charts for newly active tab
     setTimeout(() => {
