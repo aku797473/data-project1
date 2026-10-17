@@ -1,28 +1,37 @@
 /**
- * VOLTIX™ EV Intelligence Platform - Chart Engine
- * Fully responsive Chart.js rendering engine optimized for Desktop, Tablets & Mobile
+ * VOLTIX™ Analytics - Enterprise Chart Engine
+ * Professional B2B SaaS Color System (Stripe / Tableau / Retool Standard)
  */
 
 const EVCharts = (function () {
-  // Color Tokens matching Enterprise Design System
+  // Corporate Professional Color Tokens
   const colors = {
-    cyan: '#00f0ff',
+    indigo: '#6366f1',
+    sky: '#0ea5e9',
     emerald: '#10b981',
-    purple: '#8b5cf6',
     amber: '#f59e0b',
     rose: '#f43f5e',
-    blue: '#38bdf8',
+    violet: '#8b5cf6',
     teal: '#14b8a6',
-    indigo: '#6366f1',
-    slate: '#475569',
-    grid: 'rgba(255, 255, 255, 0.06)',
+    slate: '#64748b',
+    grid: 'rgba(255, 255, 255, 0.05)',
     text: '#94a3b8'
   };
 
+  // Enterprise Curated Palette
   const chartPalette = [
-    '#00f0ff', '#10b981', '#8b5cf6', '#f59e0b', 
-    '#38bdf8', '#f43f5e', '#14b8a6', '#eab308',
-    '#a855f7', '#06b6d4', '#ec4899', '#64748b'
+    '#6366f1', /* Royal Indigo */
+    '#0ea5e9', /* Sky Blue */
+    '#10b981', /* Clean Emerald */
+    '#f59e0b', /* Soft Amber */
+    '#8b5cf6', /* Violet */
+    '#f43f5e', /* Coral Rose */
+    '#14b8a6', /* Teal */
+    '#38bdf8', /* Light Blue */
+    '#a855f7', /* Purple */
+    '#eab308', /* Warm Gold */
+    '#ec4899', /* Pink */
+    '#64748b'  /* Neutral Slate */
   ];
 
   // Active chart instances cache
@@ -42,25 +51,25 @@ const EVCharts = (function () {
       maintainAspectRatio: false,
       plugins: {
         legend: {
-          position: isMobile ? 'top' : 'top',
+          position: 'top',
           align: 'end',
           labels: {
             color: colors.text,
-            font: { family: 'Plus Jakarta Sans', size: isMobile ? 10 : 11, weight: '500' },
+            font: { family: 'Inter', size: isMobile ? 10 : 11, weight: '500' },
             usePointStyle: true,
             boxWidth: 7,
             padding: isMobile ? 8 : 12
           }
         },
         tooltip: {
-          backgroundColor: 'rgba(10, 15, 29, 0.96)',
-          titleFont: { family: 'Space Grotesk', size: 12, weight: '700' },
-          bodyFont: { family: 'Plus Jakarta Sans', size: 11 },
-          borderColor: 'rgba(0, 240, 255, 0.35)',
+          backgroundColor: '#0f172a',
+          titleFont: { family: 'Plus Jakarta Sans', size: 12, weight: '600' },
+          bodyFont: { family: 'Inter', size: 11 },
+          borderColor: 'rgba(255, 255, 255, 0.12)',
           borderWidth: 1,
           padding: 10,
           boxPadding: 4,
-          cornerRadius: 8
+          cornerRadius: 6
         }
       },
       scales: {
@@ -68,7 +77,7 @@ const EVCharts = (function () {
           grid: { color: colors.grid, drawBorder: false },
           ticks: {
             color: colors.text,
-            font: { family: 'Plus Jakarta Sans', size: isMobile ? 9 : 11 },
+            font: { family: 'Inter', size: isMobile ? 9 : 11 },
             maxRotation: isMobile ? 45 : 0
           }
         },
@@ -76,7 +85,7 @@ const EVCharts = (function () {
           grid: { color: colors.grid, drawBorder: false },
           ticks: {
             color: colors.text,
-            font: { family: 'Plus Jakarta Sans', size: isMobile ? 9 : 11 }
+            font: { family: 'Inter', size: isMobile ? 9 : 11 }
           }
         }
       }
@@ -107,10 +116,10 @@ const EVCharts = (function () {
         datasets: [{
           label: 'Annual Units Sold',
           data: values,
-          backgroundColor: labels.map((_, i) => chartPalette[i % chartPalette.length] + 'cc'),
-          borderColor: labels.map((_, i) => chartPalette[i % chartPalette.length]),
-          borderWidth: 1.5,
-          borderRadius: 6
+          backgroundColor: '#6366f1cc',
+          borderColor: '#6366f1',
+          borderWidth: 1,
+          borderRadius: 4
         }]
       },
       options: opts
@@ -152,7 +161,7 @@ const EVCharts = (function () {
           data: values,
           backgroundColor: chartPalette.slice(0, labels.length),
           borderWidth: 2,
-          borderColor: '#0b1120'
+          borderColor: '#0e1424'
         }]
       },
       options: {
@@ -163,7 +172,7 @@ const EVCharts = (function () {
             position: isMobile ? 'bottom' : 'right',
             labels: {
               color: colors.text,
-              font: { family: 'Plus Jakarta Sans', size: isMobile ? 10 : 11 },
+              font: { family: 'Inter', size: isMobile ? 10 : 11 },
               usePointStyle: true,
               boxWidth: 7,
               padding: isMobile ? 6 : 10
@@ -203,11 +212,11 @@ const EVCharts = (function () {
         label: tech,
         data: dataPoints,
         borderColor: chartPalette[idx % chartPalette.length],
-        backgroundColor: chartPalette[idx % chartPalette.length] + '22',
-        borderWidth: 2.2,
-        tension: 0.35,
+        backgroundColor: chartPalette[idx % chartPalette.length] + '18',
+        borderWidth: 2,
+        tension: 0.3,
         fill: false,
-        pointRadius: 3
+        pointRadius: 2.5
       };
     });
 
@@ -247,10 +256,10 @@ const EVCharts = (function () {
         datasets: [{
           label: 'Total Units Manufactured',
           data: values,
-          backgroundColor: '#00f0ffaa',
-          borderColor: '#00f0ff',
-          borderWidth: 1.5,
-          borderRadius: 6
+          backgroundColor: '#0ea5e9cc',
+          borderColor: '#0ea5e9',
+          borderWidth: 1,
+          borderRadius: 4
         }]
       },
       options: opts
@@ -286,9 +295,9 @@ const EVCharts = (function () {
           {
             label: 'Sales (M Units)',
             data: units,
-            backgroundColor: '#00f0ffcc',
-            borderColor: '#00f0ff',
-            borderRadius: 6,
+            backgroundColor: '#6366f1cc',
+            borderColor: '#6366f1',
+            borderRadius: 4,
             yAxisID: 'y'
           },
           {
@@ -296,7 +305,7 @@ const EVCharts = (function () {
             data: revenue,
             backgroundColor: '#10b981cc',
             borderColor: '#10b981',
-            borderRadius: 6,
+            borderRadius: 4,
             yAxisID: 'y1'
           }
         ]
@@ -309,7 +318,7 @@ const EVCharts = (function () {
             grid: { color: colors.grid },
             ticks: {
               color: colors.text,
-              font: { family: 'Plus Jakarta Sans', size: isMobile ? 9 : 11 },
+              font: { family: 'Inter', size: isMobile ? 9 : 11 },
               maxRotation: isMobile ? 45 : 0
             }
           },
@@ -317,17 +326,17 @@ const EVCharts = (function () {
             type: 'linear',
             position: 'left',
             grid: { color: colors.grid },
-            ticks: { color: colors.text, font: { family: 'Plus Jakarta Sans', size: isMobile ? 9 : 11 }, callback: v => v + 'M' }
+            ticks: { color: colors.text, font: { family: 'Inter', size: isMobile ? 9 : 11 }, callback: v => v + 'M' }
           },
           y1: {
             type: 'linear',
             position: 'right',
             grid: { drawOnChartArea: false },
-            ticks: { color: '#10b981', font: { family: 'Plus Jakarta Sans', size: isMobile ? 9 : 11 }, callback: v => '$' + v + 'B' }
+            ticks: { color: '#10b981', font: { family: 'Inter', size: isMobile ? 9 : 11 }, callback: v => '$' + v + 'B' }
           }
         },
         plugins: {
-          legend: { labels: { color: colors.text, usePointStyle: true, font: { family: 'Plus Jakarta Sans', size: isMobile ? 10 : 11 } } }
+          legend: { labels: { color: colors.text, usePointStyle: true, font: { family: 'Inter', size: isMobile ? 10 : 11 } } }
         }
       }
     });
@@ -355,8 +364,8 @@ const EVCharts = (function () {
           data: sampled,
           backgroundColor: '#8b5cf6aa',
           borderColor: '#8b5cf6',
-          pointRadius: isMobile ? 3.5 : 5,
-          pointHoverRadius: 7
+          pointRadius: isMobile ? 3.5 : 4.5,
+          pointHoverRadius: 6
         }]
       },
       options: {
@@ -367,7 +376,7 @@ const EVCharts = (function () {
             grid: { color: colors.grid },
             ticks: {
               color: colors.text,
-              font: { family: 'Plus Jakarta Sans', size: isMobile ? 9 : 11 },
+              font: { family: 'Inter', size: isMobile ? 9 : 11 },
               callback: v => '$' + (v / 1e3) + 'k'
             },
             title: { display: !isMobile, text: 'Base Price (USD)', color: colors.text }
@@ -376,7 +385,7 @@ const EVCharts = (function () {
             min: 3.0,
             max: 5.0,
             grid: { color: colors.grid },
-            ticks: { color: colors.text, font: { family: 'Plus Jakarta Sans', size: isMobile ? 9 : 11 }, stepSize: 0.5 },
+            ticks: { color: colors.text, font: { family: 'Inter', size: isMobile ? 9 : 11 }, stepSize: 0.5 },
             title: { display: !isMobile, text: 'Customer Rating (1 - 5 Stars)', color: colors.text }
           }
         },
@@ -431,18 +440,18 @@ const EVCharts = (function () {
             grid: { color: colors.grid },
             ticks: {
               color: colors.text,
-              font: { family: 'Plus Jakarta Sans', size: isMobile ? 9 : 11 },
+              font: { family: 'Inter', size: isMobile ? 9 : 11 },
               maxRotation: isMobile ? 45 : 0
             }
           },
           y: {
             stacked: true,
             grid: { color: colors.grid },
-            ticks: { color: colors.text, font: { family: 'Plus Jakarta Sans', size: isMobile ? 9 : 11 } }
+            ticks: { color: colors.text, font: { family: 'Inter', size: isMobile ? 9 : 11 } }
           }
         },
         plugins: {
-          legend: { labels: { color: colors.text, usePointStyle: true, font: { family: 'Plus Jakarta Sans', size: isMobile ? 10 : 11 } } }
+          legend: { labels: { color: colors.text, usePointStyle: true, font: { family: 'Inter', size: isMobile ? 10 : 11 } } }
         }
       }
     });
@@ -478,8 +487,8 @@ const EVCharts = (function () {
           data: avgPrices,
           backgroundColor: '#f59e0baa',
           borderColor: '#f59e0b',
-          borderWidth: 1.5,
-          borderRadius: 6
+          borderWidth: 1,
+          borderRadius: 4
         }]
       },
       options: opts
@@ -519,9 +528,9 @@ const EVCharts = (function () {
           {
             label: 'Avg Range (km)',
             data: rangeData,
-            backgroundColor: '#00f0ffcc',
-            borderColor: '#00f0ff',
-            borderRadius: 6,
+            backgroundColor: '#6366f1cc',
+            borderColor: '#6366f1',
+            borderRadius: 4,
             yAxisID: 'y'
           },
           {
@@ -529,7 +538,7 @@ const EVCharts = (function () {
             data: chargeTimeData,
             backgroundColor: '#f43f5ecc',
             borderColor: '#f43f5e',
-            borderRadius: 6,
+            borderRadius: 4,
             yAxisID: 'y1'
           }
         ]
@@ -542,23 +551,23 @@ const EVCharts = (function () {
             grid: { color: colors.grid },
             ticks: {
               color: colors.text,
-              font: { family: 'Plus Jakarta Sans', size: isMobile ? 9 : 11 },
+              font: { family: 'Inter', size: isMobile ? 9 : 11 },
               maxRotation: isMobile ? 45 : 0
             }
           },
           y: {
             position: 'left',
             grid: { color: colors.grid },
-            ticks: { color: colors.text, font: { family: 'Plus Jakarta Sans', size: isMobile ? 9 : 11 } }
+            ticks: { color: colors.text, font: { family: 'Inter', size: isMobile ? 9 : 11 } }
           },
           y1: {
             position: 'right',
             grid: { drawOnChartArea: false },
-            ticks: { color: '#f43f5e', font: { family: 'Plus Jakarta Sans', size: isMobile ? 9 : 11 } }
+            ticks: { color: '#f43f5e', font: { family: 'Inter', size: isMobile ? 9 : 11 } }
           }
         },
         plugins: {
-          legend: { labels: { color: colors.text, usePointStyle: true, font: { family: 'Plus Jakarta Sans', size: isMobile ? 10 : 11 } } }
+          legend: { labels: { color: colors.text, usePointStyle: true, font: { family: 'Inter', size: isMobile ? 10 : 11 } } }
         }
       }
     });
@@ -586,7 +595,7 @@ const EVCharts = (function () {
         datasets: [{
           data: values,
           backgroundColor: chartPalette.slice(0, labels.length).map(c => c + 'aa'),
-          borderColor: '#0b1120',
+          borderColor: '#0e1424',
           borderWidth: 2
         }]
       },
@@ -598,7 +607,7 @@ const EVCharts = (function () {
             position: isMobile ? 'bottom' : 'right',
             labels: {
               color: colors.text,
-              font: { family: 'Plus Jakarta Sans', size: isMobile ? 10 : 11 },
+              font: { family: 'Inter', size: isMobile ? 10 : 11 },
               usePointStyle: true,
               boxWidth: 7
             }
