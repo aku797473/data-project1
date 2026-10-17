@@ -1,31 +1,31 @@
 /**
- * Electric Vehicle (EV) Industry Analytics - Chart Engine
- * Manages all Chart.js instances across Overview & Scenarios
+ * VOLTIX™ EV Intelligence Platform - Chart Engine
+ * Fully responsive Chart.js rendering engine optimized for Desktop, Tablets & Mobile
  */
 
 const EVCharts = (function () {
-  // Color Tokens matching Design System
+  // Color Tokens matching Enterprise Design System
   const colors = {
     cyan: '#00f0ff',
     emerald: '#10b981',
     purple: '#8b5cf6',
     amber: '#f59e0b',
     rose: '#f43f5e',
-    blue: '#3b82f6',
+    blue: '#38bdf8',
     teal: '#14b8a6',
     indigo: '#6366f1',
     slate: '#475569',
-    grid: 'rgba(255, 255, 255, 0.08)',
+    grid: 'rgba(255, 255, 255, 0.06)',
     text: '#94a3b8'
   };
 
   const chartPalette = [
     '#00f0ff', '#10b981', '#8b5cf6', '#f59e0b', 
-    '#3b82f6', '#f43f5e', '#14b8a6', '#eab308',
+    '#38bdf8', '#f43f5e', '#14b8a6', '#eab308',
     '#a855f7', '#06b6d4', '#ec4899', '#64748b'
   ];
 
-  // Store active chart instances
+  // Active chart instances cache
   const instances = {};
 
   function destroyChart(id) {
@@ -35,24 +35,28 @@ const EVCharts = (function () {
     }
   }
 
-  function getBaseOptions(titleText = '') {
+  function getBaseOptions() {
+    const isMobile = window.innerWidth < 768;
     return {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
         legend: {
+          position: isMobile ? 'top' : 'top',
+          align: 'end',
           labels: {
             color: colors.text,
-            font: { family: 'Inter', size: 12 },
+            font: { family: 'Plus Jakarta Sans', size: isMobile ? 10 : 11, weight: '500' },
             usePointStyle: true,
-            boxWidth: 8
+            boxWidth: 7,
+            padding: isMobile ? 8 : 12
           }
         },
         tooltip: {
-          backgroundColor: 'rgba(15, 23, 42, 0.95)',
-          titleFont: { family: 'Outfit', size: 13, weight: 'bold' },
-          bodyFont: { family: 'Inter', size: 12 },
-          borderColor: 'rgba(0, 240, 255, 0.3)',
+          backgroundColor: 'rgba(10, 15, 29, 0.96)',
+          titleFont: { family: 'Space Grotesk', size: 12, weight: '700' },
+          bodyFont: { family: 'Plus Jakarta Sans', size: 11 },
+          borderColor: 'rgba(0, 240, 255, 0.35)',
           borderWidth: 1,
           padding: 10,
           boxPadding: 4,
@@ -62,11 +66,18 @@ const EVCharts = (function () {
       scales: {
         x: {
           grid: { color: colors.grid, drawBorder: false },
-          ticks: { color: colors.text, font: { family: 'Inter', size: 11 } }
+          ticks: {
+            color: colors.text,
+            font: { family: 'Plus Jakarta Sans', size: isMobile ? 9 : 11 },
+            maxRotation: isMobile ? 45 : 0
+          }
         },
         y: {
           grid: { color: colors.grid, drawBorder: false },
-          ticks: { color: colors.text, font: { family: 'Inter', size: 11 } }
+          ticks: {
+            color: colors.text,
+            font: { family: 'Plus Jakarta Sans', size: isMobile ? 9 : 11 }
+          }
         }
       }
     };
@@ -120,7 +131,6 @@ const EVCharts = (function () {
       total += units;
     });
 
-    // Top 7 manufacturers, group rest as "Other"
     const sorted = Object.entries(mfgMap).sort((a, b) => b[1] - a[1]);
     const top = sorted.slice(0, 6);
     const otherUnits = sorted.slice(6).reduce((acc, curr) => acc + curr[1], 0);
@@ -132,6 +142,8 @@ const EVCharts = (function () {
       values.push(otherUnits);
     }
 
+    const isMobile = window.innerWidth < 768;
+
     instances[canvasId] = new Chart(canvas, {
       type: 'doughnut',
       data: {
@@ -140,7 +152,7 @@ const EVCharts = (function () {
           data: values,
           backgroundColor: chartPalette.slice(0, labels.length),
           borderWidth: 2,
-          borderColor: '#111726'
+          borderColor: '#0b1120'
         }]
       },
       options: {
@@ -148,8 +160,14 @@ const EVCharts = (function () {
         maintainAspectRatio: false,
         plugins: {
           legend: {
-            position: 'right',
-            labels: { color: colors.text, font: { family: 'Inter', size: 11 }, usePointStyle: true }
+            position: isMobile ? 'bottom' : 'right',
+            labels: {
+              color: colors.text,
+              font: { family: 'Plus Jakarta Sans', size: isMobile ? 10 : 11 },
+              usePointStyle: true,
+              boxWidth: 7,
+              padding: isMobile ? 6 : 10
+            }
           },
           tooltip: {
             callbacks: {
@@ -161,12 +179,12 @@ const EVCharts = (function () {
             }
           }
         },
-        cutout: '68%'
+        cutout: isMobile ? '60%' : '66%'
       }
     });
   }
 
-  // 3. Overview: Battery Tech Adoption Trend over Time
+  // 3. Overview: Battery Chemistry Adoption Timeline (2021–2026)
   function renderTechAdoption(canvasId, data) {
     destroyChart(canvasId);
     const canvas = document.getElementById(canvasId);
@@ -186,7 +204,7 @@ const EVCharts = (function () {
         data: dataPoints,
         borderColor: chartPalette[idx % chartPalette.length],
         backgroundColor: chartPalette[idx % chartPalette.length] + '22',
-        borderWidth: 2.5,
+        borderWidth: 2.2,
         tension: 0.35,
         fill: false,
         pointRadius: 3
@@ -255,8 +273,10 @@ const EVCharts = (function () {
     });
 
     const labels = Object.keys(catMap);
-    const units = labels.map(k => catMap[k].units / 1e6); // Millions
-    const revenue = labels.map(k => catMap[k].revenue / 1e9); // Billions
+    const units = labels.map(k => catMap[k].units / 1e6);
+    const revenue = labels.map(k => catMap[k].revenue / 1e9);
+
+    const isMobile = window.innerWidth < 768;
 
     instances[canvasId] = new Chart(canvas, {
       type: 'bar',
@@ -264,7 +284,7 @@ const EVCharts = (function () {
         labels: labels,
         datasets: [
           {
-            label: 'Sales Volume (Million Units)',
+            label: 'Sales (M Units)',
             data: units,
             backgroundColor: '#00f0ffcc',
             borderColor: '#00f0ff',
@@ -272,7 +292,7 @@ const EVCharts = (function () {
             yAxisID: 'y'
           },
           {
-            label: 'Total Revenue (Billion $)',
+            label: 'Gross Rev ($B)',
             data: revenue,
             backgroundColor: '#10b981cc',
             borderColor: '#10b981',
@@ -285,24 +305,29 @@ const EVCharts = (function () {
         responsive: true,
         maintainAspectRatio: false,
         scales: {
-          x: { grid: { color: colors.grid }, ticks: { color: colors.text } },
+          x: {
+            grid: { color: colors.grid },
+            ticks: {
+              color: colors.text,
+              font: { family: 'Plus Jakarta Sans', size: isMobile ? 9 : 11 },
+              maxRotation: isMobile ? 45 : 0
+            }
+          },
           y: {
             type: 'linear',
             position: 'left',
             grid: { color: colors.grid },
-            ticks: { color: colors.text, callback: v => v + 'M' },
-            title: { display: true, text: 'Units Sold (M)', color: colors.text }
+            ticks: { color: colors.text, font: { family: 'Plus Jakarta Sans', size: isMobile ? 9 : 11 }, callback: v => v + 'M' }
           },
           y1: {
             type: 'linear',
             position: 'right',
             grid: { drawOnChartArea: false },
-            ticks: { color: '#10b981', callback: v => '$' + v + 'B' },
-            title: { display: true, text: 'Revenue ($B)', color: '#10b981' }
+            ticks: { color: '#10b981', font: { family: 'Plus Jakarta Sans', size: isMobile ? 9 : 11 }, callback: v => '$' + v + 'B' }
           }
         },
         plugins: {
-          legend: { labels: { color: colors.text, usePointStyle: true } }
+          legend: { labels: { color: colors.text, usePointStyle: true, font: { family: 'Plus Jakarta Sans', size: isMobile ? 10 : 11 } } }
         }
       }
     });
@@ -314,12 +339,13 @@ const EVCharts = (function () {
     const canvas = document.getElementById(canvasId);
     if (!canvas) return;
 
-    // Sample 120 points for smooth rendering
     const sampled = data.slice(0, 140).map(r => ({
       x: Number(r.Base_Price_USD),
       y: Number(r.Customer_Rating),
       label: `${r.Manufacturer} ${r.Model_Name} (${r.Vehicle_Category})`
     }));
+
+    const isMobile = window.innerWidth < 768;
 
     instances[canvasId] = new Chart(canvas, {
       type: 'scatter',
@@ -329,8 +355,8 @@ const EVCharts = (function () {
           data: sampled,
           backgroundColor: '#8b5cf6aa',
           borderColor: '#8b5cf6',
-          pointRadius: 5,
-          pointHoverRadius: 8
+          pointRadius: isMobile ? 3.5 : 5,
+          pointHoverRadius: 7
         }]
       },
       options: {
@@ -339,15 +365,19 @@ const EVCharts = (function () {
         scales: {
           x: {
             grid: { color: colors.grid },
-            ticks: { color: colors.text, callback: v => '$' + (v / 1e3) + 'k' },
-            title: { display: true, text: 'Base Price (USD)', color: colors.text }
+            ticks: {
+              color: colors.text,
+              font: { family: 'Plus Jakarta Sans', size: isMobile ? 9 : 11 },
+              callback: v => '$' + (v / 1e3) + 'k'
+            },
+            title: { display: !isMobile, text: 'Base Price (USD)', color: colors.text }
           },
           y: {
             min: 3.0,
             max: 5.0,
             grid: { color: colors.grid },
-            ticks: { color: colors.text, stepSize: 0.5 },
-            title: { display: true, text: 'Customer Rating (1 - 5 Stars)', color: colors.text }
+            ticks: { color: colors.text, font: { family: 'Plus Jakarta Sans', size: isMobile ? 9 : 11 }, stepSize: 0.5 },
+            title: { display: !isMobile, text: 'Customer Rating (1 - 5 Stars)', color: colors.text }
           }
         },
         plugins: {
@@ -387,6 +417,8 @@ const EVCharts = (function () {
       };
     });
 
+    const isMobile = window.innerWidth < 768;
+
     instances[canvasId] = new Chart(canvas, {
       type: 'bar',
       data: { labels: topMfgs, datasets: datasets },
@@ -394,11 +426,23 @@ const EVCharts = (function () {
         responsive: true,
         maintainAspectRatio: false,
         scales: {
-          x: { stacked: true, grid: { color: colors.grid }, ticks: { color: colors.text } },
-          y: { stacked: true, grid: { color: colors.grid }, ticks: { color: colors.text } }
+          x: {
+            stacked: true,
+            grid: { color: colors.grid },
+            ticks: {
+              color: colors.text,
+              font: { family: 'Plus Jakarta Sans', size: isMobile ? 9 : 11 },
+              maxRotation: isMobile ? 45 : 0
+            }
+          },
+          y: {
+            stacked: true,
+            grid: { color: colors.grid },
+            ticks: { color: colors.text, font: { family: 'Plus Jakarta Sans', size: isMobile ? 9 : 11 } }
+          }
         },
         plugins: {
-          legend: { labels: { color: colors.text, usePointStyle: true } }
+          legend: { labels: { color: colors.text, usePointStyle: true, font: { family: 'Plus Jakarta Sans', size: isMobile ? 10 : 11 } } }
         }
       }
     });
@@ -451,23 +495,21 @@ const EVCharts = (function () {
     const techs = ['LFP', 'NMC', 'NCA', 'Sodium-Ion', 'Solid-State'];
     const rangeData = [];
     const chargeTimeData = [];
-    const effData = [];
 
     techs.forEach(t => {
       const subset = data.filter(r => r.Battery_Technology === t);
       if (subset.length > 0) {
         const avgRange = subset.reduce((acc, r) => acc + Number(r.Driving_Range_km), 0) / subset.length;
         const avgTime = subset.reduce((acc, r) => acc + Number(r.Fast_Charge_Time_min), 0) / subset.length;
-        const avgEff = subset.reduce((acc, r) => acc + Number(r.Efficiency_Wh_per_km), 0) / subset.length;
         rangeData.push(Math.round(avgRange));
         chargeTimeData.push(Math.round(avgTime));
-        effData.push(Math.round(avgEff));
       } else {
         rangeData.push(0);
         chargeTimeData.push(0);
-        effData.push(0);
       }
     });
+
+    const isMobile = window.innerWidth < 768;
 
     instances[canvasId] = new Chart(canvas, {
       type: 'bar',
@@ -475,7 +517,7 @@ const EVCharts = (function () {
         labels: techs,
         datasets: [
           {
-            label: 'Avg Driving Range (km)',
+            label: 'Avg Range (km)',
             data: rangeData,
             backgroundColor: '#00f0ffcc',
             borderColor: '#00f0ff',
@@ -483,7 +525,7 @@ const EVCharts = (function () {
             yAxisID: 'y'
           },
           {
-            label: 'Fast Charge Time 10-80% (min)',
+            label: 'Charge Time 10-80% (min)',
             data: chargeTimeData,
             backgroundColor: '#f43f5ecc',
             borderColor: '#f43f5e',
@@ -496,22 +538,27 @@ const EVCharts = (function () {
         responsive: true,
         maintainAspectRatio: false,
         scales: {
-          x: { grid: { color: colors.grid }, ticks: { color: colors.text } },
+          x: {
+            grid: { color: colors.grid },
+            ticks: {
+              color: colors.text,
+              font: { family: 'Plus Jakarta Sans', size: isMobile ? 9 : 11 },
+              maxRotation: isMobile ? 45 : 0
+            }
+          },
           y: {
             position: 'left',
             grid: { color: colors.grid },
-            ticks: { color: colors.text },
-            title: { display: true, text: 'Range (km)', color: colors.text }
+            ticks: { color: colors.text, font: { family: 'Plus Jakarta Sans', size: isMobile ? 9 : 11 } }
           },
           y1: {
             position: 'right',
             grid: { drawOnChartArea: false },
-            ticks: { color: '#f43f5e' },
-            title: { display: true, text: 'Charge Time (mins)', color: '#f43f5e' }
+            ticks: { color: '#f43f5e', font: { family: 'Plus Jakarta Sans', size: isMobile ? 9 : 11 } }
           }
         },
         plugins: {
-          legend: { labels: { color: colors.text, usePointStyle: true } }
+          legend: { labels: { color: colors.text, usePointStyle: true, font: { family: 'Plus Jakarta Sans', size: isMobile ? 10 : 11 } } }
         }
       }
     });
@@ -530,6 +577,7 @@ const EVCharts = (function () {
 
     const labels = Object.keys(catMap);
     const values = labels.map(k => Math.round(catMap[k]));
+    const isMobile = window.innerWidth < 768;
 
     instances[canvasId] = new Chart(canvas, {
       type: 'polarArea',
@@ -538,7 +586,7 @@ const EVCharts = (function () {
         datasets: [{
           data: values,
           backgroundColor: chartPalette.slice(0, labels.length).map(c => c + 'aa'),
-          borderColor: '#111726',
+          borderColor: '#0b1120',
           borderWidth: 2
         }]
       },
@@ -546,7 +594,15 @@ const EVCharts = (function () {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: { position: 'right', labels: { color: colors.text, usePointStyle: true } }
+          legend: {
+            position: isMobile ? 'bottom' : 'right',
+            labels: {
+              color: colors.text,
+              font: { family: 'Plus Jakarta Sans', size: isMobile ? 10 : 11 },
+              usePointStyle: true,
+              boxWidth: 7
+            }
+          }
         },
         scales: {
           r: { grid: { color: colors.grid }, ticks: { display: false } }
