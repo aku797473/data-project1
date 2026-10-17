@@ -1,5 +1,5 @@
 /**
- * Electric Vehicle (EV) Industry Analytics - Main Controller
+ * VOLTIX™ EV Intelligence Platform - Main Application Controller
  * Orchestrates filtering, state, tabs, table pagination & modal workflows
  */
 
@@ -44,6 +44,7 @@
     el.filterSearch = document.getElementById('filter-search');
     el.btnResetFilters = document.getElementById('btn-reset-filters');
     el.btnExportCsv = document.getElementById('btn-export-csv');
+    el.btnExportCsvTop = document.getElementById('btn-export-csv-top');
 
     // KPIs
     el.kpiTotalSales = document.getElementById('kpi-total-sales');
@@ -54,8 +55,8 @@
     el.kpiTotalModels = document.getElementById('kpi-total-models');
 
     // Tabs
-    el.tabButtons = document.querySelectorAll('.tab-btn');
-    el.tabPanes = document.querySelectorAll('.tab-pane');
+    el.tabButtons = document.querySelectorAll('.nav-tab');
+    el.tabPanes = document.querySelectorAll('.view-pane');
 
     // Table
     el.tableBody = document.getElementById('table-body');
@@ -63,10 +64,11 @@
     el.btnPrevPage = document.getElementById('btn-prev-page');
     el.btnNextPage = document.getElementById('btn-next-page');
 
-    // Submission Modal
-    el.btnOpenModal = document.querySelectorAll('.btn-open-submission-modal');
-    el.modalSubmission = document.getElementById('modal-submission');
-    el.btnCloseModal = document.getElementById('btn-close-modal');
+    // Methodology Modal
+    el.btnOpenMethodology = document.getElementById('btn-open-methodology');
+    el.btnOpenModalTop = document.getElementById('btn-open-modal-top');
+    el.modalMethodology = document.getElementById('modal-methodology');
+    el.btnCloseMethodology = document.getElementById('btn-close-methodology');
   }
 
   function bindEvents() {
@@ -76,12 +78,12 @@
         document.body.classList.toggle('light-theme');
         const isLight = document.body.classList.contains('light-theme');
         el.themeToggle.textContent = isLight ? '🌙' : '☀️';
-        localStorage.setItem('ev_dashboard_theme', isLight ? 'light' : 'dark');
+        localStorage.setItem('voltix_ev_theme', isLight ? 'light' : 'dark');
         triggerRenderActiveTabCharts();
       });
 
       // Restore saved theme
-      if (localStorage.getItem('ev_dashboard_theme') === 'light') {
+      if (localStorage.getItem('voltix_ev_theme') === 'light') {
         document.body.classList.add('light-theme');
         el.themeToggle.textContent = '🌙';
       }
@@ -114,6 +116,10 @@
       el.btnExportCsv.addEventListener('click', exportFilteredCsv);
     }
 
+    if (el.btnExportCsvTop) {
+      el.btnExportCsvTop.addEventListener('click', exportFilteredCsv);
+    }
+
     // Pagination
     if (el.btnPrevPage) {
       el.btnPrevPage.addEventListener('click', () => {
@@ -134,26 +140,24 @@
       });
     }
 
-    // Submission Guide Modal
-    el.btnOpenModal.forEach(btn => {
-      btn.addEventListener('click', e => {
-        e.preventDefault();
-        openModal();
-      });
-    });
-
-    if (el.btnCloseModal) {
-      el.btnCloseModal.addEventListener('click', closeModal);
+    // Methodology Modal Events
+    if (el.btnOpenMethodology) {
+      el.btnOpenMethodology.addEventListener('click', openMethodologyModal);
     }
-
-    if (el.modalSubmission) {
-      el.modalSubmission.addEventListener('click', e => {
-        if (e.target === el.modalSubmission) closeModal();
+    if (el.btnOpenModalTop) {
+      el.btnOpenModalTop.addEventListener('click', openMethodologyModal);
+    }
+    if (el.btnCloseMethodology) {
+      el.btnCloseMethodology.addEventListener('click', closeMethodologyModal);
+    }
+    if (el.modalMethodology) {
+      el.modalMethodology.addEventListener('click', e => {
+        if (e.target === el.modalMethodology) closeMethodologyModal();
       });
     }
 
     // Table sorting
-    document.querySelectorAll('.data-table th[data-sort]').forEach(th => {
+    document.querySelectorAll('.styled-table th[data-sort]').forEach(th => {
       th.style.cursor = 'pointer';
       th.addEventListener('click', () => {
         const col = th.getAttribute('data-sort');
@@ -269,7 +273,7 @@
     if (el.kpiAvgRange) el.kpiAvgRange.textContent = `${avgRange} km`;
     if (el.kpiAvgRating) el.kpiAvgRating.textContent = `${avgRating} ★`;
     if (el.kpiTotalCo2) el.kpiTotalCo2.textContent = Math.round(totalCo2).toLocaleString() + ' Tons';
-    if (el.kpiTotalModels) el.kpiTotalModels.textContent = data.length.toLocaleString();
+    if (el.kpiTotalModels) el.kpiTotalModels.textContent = data.length.toLocaleString() + ' Models';
   }
 
   function switchTab(tabId) {
@@ -360,25 +364,25 @@
 
     if (pageItems.length === 0) {
       el.tableBody.innerHTML = `<tr><td colspan="10" style="text-align: center; padding: 30px; color: var(--text-muted);">No vehicle models match the selected filter criteria.</td></tr>`;
-      if (el.tablePaginationInfo) el.tablePaginationInfo.textContent = 'Showing 0 to 0 of 0 vehicles';
+      if (el.tablePaginationInfo) el.tablePaginationInfo.textContent = 'Showing 0 to 0 of 0 models';
       return;
     }
 
     let rowsHtml = '';
     pageItems.forEach(r => {
-      const techBadgeClass = getTechBadgeClass(r.Battery_Technology);
+      const chemBadgeClass = getChemBadgeClass(r.Battery_Technology);
       rowsHtml += `
         <tr>
-          <td><strong style="color: var(--accent-cyan);">${r.Vehicle_ID}</strong></td>
+          <td><strong style="color: var(--accent-cyan); font-family: 'Space Grotesk', monospace;">${r.Vehicle_ID}</strong></td>
           <td>${r.Year}</td>
           <td><strong>${r.Manufacturer}</strong></td>
           <td>${r.Model_Name}</td>
-          <td><span class="focus-tag">${r.Vehicle_Category}</span></td>
-          <td><span class="badge-tag ${techBadgeClass}">${r.Battery_Technology}</span></td>
+          <td><span class="scenario-chip">${r.Vehicle_Category}</span></td>
+          <td><span class="badge-chem ${chemBadgeClass}">${r.Battery_Technology}</span></td>
           <td>${r.Battery_Capacity_kWh} kWh</td>
           <td><strong>${r.Driving_Range_km} km</strong></td>
           <td>$${Number(r.Base_Price_USD).toLocaleString()}</td>
-          <td><span style="color: #f59e0b;">★ ${Number(r.Customer_Rating).toFixed(2)}</span></td>
+          <td><span style="color: #f59e0b; font-weight: 600;">★ ${Number(r.Customer_Rating).toFixed(2)}</span></td>
         </tr>
       `;
     });
@@ -387,11 +391,11 @@
 
     if (el.tablePaginationInfo) {
       const end = Math.min(startIndex + state.pageSize, data.length);
-      el.tablePaginationInfo.textContent = `Showing ${startIndex + 1} to ${end} of ${data.length} vehicles`;
+      el.tablePaginationInfo.textContent = `Showing ${startIndex + 1} to ${end} of ${data.length} models`;
     }
   }
 
-  function getTechBadgeClass(tech) {
+  function getChemBadgeClass(tech) {
     switch (tech) {
       case 'LFP': return 'badge-lfp';
       case 'NMC': return 'badge-nmc';
@@ -418,18 +422,18 @@
     const csvContent = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvRows.join('\n'));
     const link = document.createElement('a');
     link.setAttribute('href', csvContent);
-    link.setAttribute('download', `ev_market_data_filtered_${new Date().toISOString().slice(0, 10)}.csv`);
+    link.setAttribute('download', `voltix_ev_telemetry_${new Date().toISOString().slice(0, 10)}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   }
 
-  function openModal() {
-    if (el.modalSubmission) el.modalSubmission.classList.add('active');
+  function openMethodologyModal() {
+    if (el.modalMethodology) el.modalMethodology.classList.add('active');
   }
 
-  function closeModal() {
-    if (el.modalSubmission) el.modalSubmission.classList.remove('active');
+  function closeMethodologyModal() {
+    if (el.modalMethodology) el.modalMethodology.classList.remove('active');
   }
 
   function formatNumber(num) {
