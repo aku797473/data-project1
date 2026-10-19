@@ -1,0 +1,57 @@
+﻿{
+    "Countries":  [
+                      "China",
+                      "Germany",
+                      "India",
+                      "South Korea",
+                      "Sweden",
+                      "UK",
+                      "USA"
+                  ],
+    "Total_Units_Sold":  35785990,
+    "Average_Range_km":  455.3,
+    "Years_Covered":  [
+                          2021,
+                          2022,
+                          2023,
+                          2024,
+                          2025,
+                          2026
+                      ],
+    "Total_Revenue_USD":  1469911003618,
+    "Manufacturers":  [
+                          "BMW Group",
+                          "BYD",
+                          "Ford",
+                          "Hyundai-Kia",
+                          "Mercedes-Benz",
+                          "MG Motor",
+                          "NIO",
+                          "Ola Electric",
+                          "Rivian",
+                          "Tata Motors",
+                          "Tesla",
+                          "Volkswagen",
+                          "Volvo",
+                          "Zero Motorcycles"
+                      ],
+    "Total_Records":  1200,
+    "Total_CO2_Offset_Tons":  6500.1,
+    "Average_Base_Price_USD":  70097,
+    "Categories":  [
+                       "Bus",
+                       "Hatchback",
+                       "Sedan",
+                       "SUV",
+                       "Truck",
+                       "Two-Wheeler"
+                   ],
+    "Average_Customer_Rating":  4.27,
+    "Battery_Technologies":  [
+                                 "LFP",
+                                 "NCA",
+                                 "NMC",
+                                 "Sodium-Ion",
+                                 "Solid-State"
+                             ]
+}
