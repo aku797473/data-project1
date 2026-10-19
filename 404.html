@@ -2,761 +2,482 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-  <title>VOLTIX™ | Global EV Industry Analytics & Intelligence Platform</title>
-  <meta name="description" content="Enterprise business intelligence and predictive analytics suite for the global electric vehicle industry, battery technology adoption, and sustainable mobility.">
-  <link rel="stylesheet" href="css/styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EV Market Performance & Insights | Executive Intelligence Suite</title>
+  <meta name="description" content="Executive Tableau-grade analytics dashboard for EV market performance, automaker shares, battery technology adoption, and global distribution.">
+  <link rel="stylesheet" href="css/tableau_theme.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
 </head>
 <body>
 
-  <!-- Top Professional Enterprise Navbar -->
-  <header class="app-header">
-    <div class="brand-wrapper">
-      <!-- Proper Logo Mark: EV bolt + bar chart -->
-      <div class="brand-logo" aria-label="EV Insights Logo">
-        <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="logoGrad" x1="0" y1="0" x2="38" y2="38" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stop-color="#4f46e5"/>
-              <stop offset="100%" stop-color="#0ea5e9"/>
-            </linearGradient>
-          </defs>
-          <rect width="38" height="38" rx="9" fill="url(#logoGrad)"/>
-          <!-- Lightning bolt -->
-          <path d="M21 7L13 20h7l-1 11 9-13h-7l1-11z" fill="white" opacity="0.95"/>
-          <!-- Mini bar chart dots at bottom-right -->
-          <rect x="6" y="27" width="3" height="5" rx="1" fill="white" opacity="0.45"/>
-          <rect x="10.5" y="24" width="3" height="8" rx="1" fill="white" opacity="0.55"/>
-        </svg>
+  <!-- Master Tableau Canvas Frame -->
+  <div class="tableau-canvas">
+
+    <!-- Top Executive Action Toolbar -->
+    <header class="top-actions-bar">
+      <div class="brand-meta">
+        <span class="badge-live-pulse">
+          <span class="pulse-dot"></span>
+          Live Analytics
+        </span>
+        <span class="suite-subtitle">Global Electric Mobility Market Intelligence Suite (1,200 Verified CSV Records)</span>
       </div>
-      <div class="brand-titles">
-        <div class="brand-main-row">
-          <h1>Electric Vehicle Market Performance &amp; Insights</h1>
-          <span class="brand-badge">Transportation Analytics</span>
+
+      <div class="nav-quick-links">
+        <button class="quick-btn" id="btnOpenDataTable" title="Inspect Vehicle-Level Records">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+          <span>Fleet Explorer</span>
+        </button>
+
+        <a href="tableau_embed.html" class="quick-btn" title="View Embedded Tableau Public Story">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          <span>Tableau Story</span>
+        </a>
+
+        <a href="PROJECT_REPORT.md" class="quick-btn" target="_blank" title="View Capstone Project Report">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          <span>Report</span>
+        </a>
+
+        <!-- Sign In Button (Shown when logged out) -->
+        <button class="quick-btn primary" id="btn-auth-open" title="Sign In or Register">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span>Sign In / Register</span>
+        </button>
+
+        <!-- User Profile Pill (Shown when logged in) -->
+        <div class="auth-user-pill" id="auth-user-pill" style="display:none;">
+          <div class="auth-avatar" id="auth-avatar-initials">EV</div>
+          <span id="auth-username-label">User</span>
+          <button class="auth-signout-btn" id="btn-auth-signout" title="Sign Out">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          </button>
         </div>
-        <p>Enterprise Business Intelligence &amp; Market Forecasting Suite (2021–2026)</p>
       </div>
+    </header>
+
+    <!-- Main Dashboard Title Banner -->
+    <section class="main-title-banner">
+      <h1>EV Market Performance &amp; Insights</h1>
+    </section>
+
+    <!-- 6 KPI Summary Cards Row (Dynamically Populated from CSV) -->
+    <section class="kpi-row" aria-label="Executive Summary KPIs">
+      <!-- 1. Total Manufacturers -->
+      <div class="kpi-box">
+        <div class="kpi-title">Total Manufacturers</div>
+        <div class="kpi-value-row">
+          <div class="kpi-value" id="kpi-mfg">14</div>
+        </div>
+      </div>
+
+      <!-- 2. Total EV Models -->
+      <div class="kpi-box">
+        <div class="kpi-title">Total EV Models</div>
+        <div class="kpi-value-row">
+          <div class="kpi-value" id="kpi-models">1,200</div>
+        </div>
+      </div>
+
+      <!-- 3. Total Annual EV Sales -->
+      <div class="kpi-box">
+        <div class="kpi-title">Total Annual EV Sales</div>
+        <div class="kpi-value-row">
+          <div class="kpi-value" id="kpi-sales">$35.8M Units</div>
+        </div>
+      </div>
+
+      <!-- 4. Average Customer Rating -->
+      <div class="kpi-box">
+        <div class="kpi-title">Average Customer Rating</div>
+        <div class="kpi-value-row">
+          <div class="kpi-value" id="kpi-rating">4.21/5</div>
+        </div>
+      </div>
+
+      <!-- 5. Average Driving Range -->
+      <div class="kpi-box">
+        <div class="kpi-title">Average Driving Range</div>
+        <div class="kpi-value-row">
+          <div class="kpi-value" id="kpi-range">406.2 KM</div>
+        </div>
+      </div>
+
+      <!-- 6. Average Battery Capacity -->
+      <div class="kpi-box">
+        <div class="kpi-title">Average Battery Capacity</div>
+        <div class="kpi-value-row">
+          <div class="kpi-value" id="kpi-battery">84.5 kWh</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Dashboard Grid: Left Sidebar + Visual Matrix -->
+    <div class="dashboard-body-grid">
+
+      <!-- Left Sidebar (Brand + Dropdown Filters) -->
+      <aside class="left-controls-column">
+        <!-- Brand Illustration Card -->
+        <div class="brand-illustration-card">
+          <svg width="170" height="135" viewBox="0 0 170 135" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="brandCardGrad" x1="0" y1="0" x2="170" y2="135" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#ffffff"/>
+                <stop offset="100%" stop-color="#edf7f0"/>
+              </linearGradient>
+            </defs>
+            <!-- Badge Canvas Container -->
+            <rect x="5" y="5" width="160" height="125" rx="8" fill="url(#brandCardGrad)" stroke="#a8d5af" stroke-width="1.5"/>
+            <!-- Trend Line Curve -->
+            <path d="M 22 75 Q 45 45 75 60 T 135 35" stroke="#2e7d32" stroke-width="3" stroke-linecap="round" fill="none"/>
+            <circle cx="135" cy="35" r="4" fill="#2e7d32"/>
+            <!-- Mini Bar Chart Columns -->
+            <rect x="22" y="80" width="12" height="30" rx="3" fill="#68d391"/>
+            <rect x="40" y="68" width="12" height="42" rx="3" fill="#48bb78"/>
+            <rect x="58" y="55" width="12" height="55" rx="3" fill="#2e7d32"/>
+            <!-- Donut Gauge Chart -->
+            <circle cx="112" cy="82" r="24" stroke="#e2f0e4" stroke-width="8" fill="none"/>
+            <circle cx="112" cy="82" r="24" stroke="#38a169" stroke-width="8" stroke-dasharray="115 40" stroke-linecap="round" fill="none"/>
+            <!-- Eco Leaf Badge in corner -->
+            <path d="M 132 118 C 146 95 162 90 166 84 C 160 102 148 124 132 118 Z" fill="#38a169"/>
+            <path d="M 142 125 C 153 110 168 105 170 102 C 164 116 153 129 142 125 Z" fill="#1b5e20" opacity="0.85"/>
+          </svg>
+        </div>
+
+        <!-- Filters Box (Dynamically Filled from CSV) -->
+        <div class="filters-card">
+          <!-- Filter 1: Manufacturing Country -->
+          <div class="filter-group">
+            <label for="filterCountry" class="filter-label">Manufacturing Country</label>
+            <select id="filterCountry" class="tableau-select">
+              <option value="ALL">(All)</option>
+            </select>
+          </div>
+
+          <!-- Filter 2: Manufacturer -->
+          <div class="filter-group">
+            <label for="filterMfg" class="filter-label">Manufacturer</label>
+            <select id="filterMfg" class="tableau-select">
+              <option value="ALL">(All)</option>
+            </select>
+          </div>
+
+          <!-- Filter 3: Category -->
+          <div class="filter-group">
+            <label for="filterCategory" class="filter-label">Category</label>
+            <select id="filterCategory" class="tableau-select">
+              <option value="ALL">(All)</option>
+            </select>
+          </div>
+
+          <button id="btnResetFilters" class="filter-reset-btn">Reset All Filters</button>
+        </div>
+      </aside>
+
+      <!-- Main Visuals Matrix -->
+      <main class="visuals-matrix">
+
+        <!-- Row 2: Category Distribution + Market Share + Treemap -->
+        <div class="visuals-row-2">
+          <!-- Chart 1: EV Category Performance & Distribution -->
+          <div class="chart-card">
+            <div class="chart-header">
+              <h2 class="chart-title">EV Category Performance &amp; Distribution</h2>
+              <div class="chart-subtitle">Category Breakdown</div>
+            </div>
+            <div class="chart-body">
+              <canvas id="chartCategory"></canvas>
+            </div>
+          </div>
+
+          <!-- Chart 2: Market Share by Manufacturer -->
+          <div class="chart-card">
+            <div class="chart-header">
+              <h2 class="chart-title">Market Share by Manufacturer</h2>
+              <div class="chart-subtitle">Top OEMs by Annual Sales</div>
+            </div>
+            <div class="chart-body">
+              <canvas id="chartManufacturer"></canvas>
+            </div>
+          </div>
+
+          <!-- Chart 3: Customer Rating Records by EV Category (Treemap) -->
+          <div class="chart-card">
+            <div class="chart-header">
+              <h2 class="chart-title">Customer Rating Records by EV Category</h2>
+              <div class="chart-subtitle">Interactive Segment Treemap</div>
+            </div>
+            <div class="treemap-container" id="treemapContainer">
+              <!-- Dynamically populated from CSV records -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 3: Sales Trend + Battery Share + Map + Right EV Art -->
+        <div class="visuals-row-3">
+          <!-- Chart 4: Annual EV Sales Trend by Model Year -->
+          <div class="chart-card">
+            <div class="chart-header">
+              <h2 class="chart-title">Annual EV Sales Trend by Model Year</h2>
+            </div>
+            <div class="chart-body">
+              <canvas id="chartSalesTrend"></canvas>
+            </div>
+          </div>
+
+          <!-- Chart 5: Battery Technology Market Share -->
+          <div class="chart-card">
+            <div class="chart-header">
+              <h2 class="chart-title">Battery Technology Market Share</h2>
+            </div>
+            <div class="chart-body">
+              <canvas id="chartBattery"></canvas>
+            </div>
+          </div>
+
+          <!-- Chart 6: Distribution by Manufacturing Country (World Map) -->
+          <div class="chart-card">
+            <div class="chart-header">
+              <h2 class="chart-title">Electric Vehicle Distribution by Manufacturing Country</h2>
+            </div>
+            <div class="chart-body">
+              <svg id="worldMapSvg" class="world-map-svg" viewBox="0 0 380 200"></svg>
+              <div style="font-size: 8.5px; color: #718776; text-align: left; margin-top: 3px; font-weight: 500;">
+                &copy; 2026 Mapbox &copy; OpenStreetMap
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column Graphics: EV Car & Battery Level Indicator -->
+          <div class="right-graphic-column">
+            <!-- Modern Green EV Car Illustration -->
+            <div class="ev-car-card">
+              <svg width="170" height="115" viewBox="0 0 200 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="carBodyGrad" x1="0" y1="30" x2="200" y2="100" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#6ee7b7"/>
+                    <stop offset="50%" stop-color="#34d399"/>
+                    <stop offset="100%" stop-color="#059669"/>
+                  </linearGradient>
+                  <linearGradient id="windowGrad" x1="0" y1="40" x2="160" y2="70" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#f0fdf4"/>
+                    <stop offset="100%" stop-color="#c6f6d5"/>
+                  </linearGradient>
+                </defs>
+                <!-- Sleek Aerodynamic EV Car Body -->
+                <path d="M 25 78 Q 38 46 75 42 L 132 42 Q 166 45 180 72 L 188 85 Q 185 96 174 96 L 160 96 Q 155 80 138 80 Q 120 80 115 96 L 68 96 Q 62 80 45 80 Q 28 80 24 96 L 15 96 Q 10 90 15 82 Z" fill="url(#carBodyGrad)"/>
+                <!-- Windows -->
+                <path d="M 60 48 L 98 48 L 98 68 L 46 68 Q 50 54 60 48 Z" fill="url(#windowGrad)"/>
+                <path d="M 104 48 L 134 48 Q 150 50 158 68 L 104 68 Z" fill="url(#windowGrad)"/>
+                <!-- Wheels -->
+                <circle cx="45" cy="94" r="14" fill="#1e293b"/>
+                <circle cx="45" cy="94" r="9" fill="#64748b"/>
+                <circle cx="45" cy="94" r="4" fill="#e2e8f0"/>
+                <circle cx="138" cy="94" r="14" fill="#1e293b"/>
+                <circle cx="138" cy="94" r="9" fill="#64748b"/>
+                <circle cx="138" cy="94" r="4" fill="#e2e8f0"/>
+                <!-- Lights -->
+                <polygon points="180,75 188,78 182,82" fill="#fef08a"/>
+                <polygon points="14,75 10,79 14,83" fill="#f87171"/>
+                <!-- Energy Lightning Bolt -->
+                <path d="M 87 70 L 81 78 L 88 78 L 83 87 L 93 77 L 86 77 Z" fill="#fef08a"/>
+                <!-- Charging Cord -->
+                <path d="M 175 80 C 192 74 198 48 184 28" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                <rect x="178" y="22" width="10" height="14" rx="2" fill="#047857"/>
+                <line x1="181" y1="18" x2="181" y2="22" stroke="#047857" stroke-width="2"/>
+                <line x1="185" y1="18" x2="185" y2="22" stroke="#047857" stroke-width="2"/>
+              </svg>
+            </div>
+
+            <!-- Glowing 4-Segment Battery Level Indicator -->
+            <div class="ev-battery-card">
+              <svg width="170" height="95" viewBox="0 0 185 95" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="batteryCellGrad" x1="0" y1="0" x2="0" y2="46" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#48bb78"/>
+                    <stop offset="50%" stop-color="#38a169"/>
+                    <stop offset="100%" stop-color="#22543d"/>
+                  </linearGradient>
+                  <linearGradient id="batteryShellGrad" x1="0" y1="0" x2="150" y2="70" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#f8fafc"/>
+                    <stop offset="100%" stop-color="#e2e8f0"/>
+                  </linearGradient>
+                </defs>
+                <rect x="15" y="16" width="140" height="64" rx="10" fill="url(#batteryShellGrad)" stroke="#64748b" stroke-width="3"/>
+                <rect x="158" y="34" width="10" height="28" rx="4" fill="#94a3b8"/>
+                <rect x="25" y="24" width="25" height="48" rx="5" fill="url(#batteryCellGrad)"/>
+                <rect x="55" y="24" width="25" height="48" rx="5" fill="url(#batteryCellGrad)"/>
+                <rect x="85" y="24" width="25" height="48" rx="5" fill="url(#batteryCellGrad)"/>
+                <rect x="115" y="24" width="25" height="48" rx="5" fill="url(#batteryCellGrad)"/>
+                <path d="M 162 65 L 157 73 L 164 73 L 160 82 L 171 72 L 164 72 Z" fill="#10b981"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+      </main>
     </div>
 
-    <!-- Center Navigation Links -->
-    <nav class="header-nav" aria-label="Quick Navigation">
-      <button class="header-nav-link nav-tab active" data-tab="tab-overview">Overview</button>
-      <button class="header-nav-link nav-tab" data-tab="tab-emily">Strategy</button>
-      <button class="header-nav-link nav-tab" data-tab="tab-david">Automakers</button>
-      <button class="header-nav-link nav-tab" data-tab="tab-sarah">Battery Lab</button>
-      <button class="header-nav-link nav-tab" data-tab="tab-explorer">Fleet Data</button>
-      <button class="header-nav-link nav-tab" data-tab="tab-tableau">Tableau Hub</button>
-    </nav>
+  </div>
 
-    <!-- Header Actions -->
-    <div class="header-actions">
-      <button class="btn-ghost" id="btn-open-methodology" title="View Project Specs & Methodology">
-        <svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-        <span class="btn-label-hide">Docs</span>
-      </button>
-      <button class="btn-ghost" id="btn-export-csv-top" title="Export Cleaned CSV Dataset">
-        <svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        <span class="btn-label-hide">Export</span>
-      </button>
-      <button class="theme-btn" id="theme-toggle" title="Toggle Light/Dark Theme" aria-label="Toggle Theme">☀️</button>
-
-      <!-- Auth Button (shown when logged out) -->
-      <button class="btn-auth-signin" id="btn-auth-open" title="Sign In">
-        <svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        <span>Sign In</span>
-      </button>
-
-      <!-- User Avatar (shown when logged in) -->
-      <div class="auth-user-pill" id="auth-user-pill" style="display:none;">
-        <div class="auth-avatar" id="auth-avatar-initials">EV</div>
-        <span class="auth-username" id="auth-username-label">User</span>
-        <button class="auth-signout-btn" id="btn-auth-signout" title="Sign Out">
-          <svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-        </button>
-      </div>
-
-      <!-- hidden compat hook -->
-      <button id="btn-open-modal-top" style="display:none;" aria-hidden="true"></button>
-    </div>
-  </header>
-
-  <!-- Main Workspace -->
-  <main class="app-container">
-
-    <!-- KPI Metrics Section -->
-    <section class="kpi-section">
-      <!-- 1. Deliveries -->
-      <div class="kpi-card" style="--card-color: var(--accent-cyan);">
-        <div class="kpi-meta">
-          <span class="kpi-label">Global EV Deliveries</span>
-          <div class="kpi-icon-pill">
-            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
-          </div>
-        </div>
-        <div class="kpi-number" id="kpi-total-sales">35.8M Units</div>
-        <div class="kpi-footnote">
-          <span class="trend-badge positive">↑ 28.4% YoY</span>
-          <span>Annual market volume</span>
-        </div>
-      </div>
-
-      <!-- 2. Revenue -->
-      <div class="kpi-card" style="--card-color: var(--accent-emerald);">
-        <div class="kpi-meta">
-          <span class="kpi-label">Gross Market Revenue</span>
-          <div class="kpi-icon-pill">
-            <svg class="svg-icon" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-          </div>
-        </div>
-        <div class="kpi-number" id="kpi-total-revenue">$1,469.9B</div>
-        <div class="kpi-footnote">
-          <span class="trend-badge positive">↑ 34.1% YoY</span>
-          <span>Cumulative OEM revenue</span>
-        </div>
-      </div>
-
-      <!-- 3. Driving Range -->
-      <div class="kpi-card" style="--card-color: var(--accent-purple);">
-        <div class="kpi-meta">
-          <span class="kpi-label">Average Driving Range</span>
-          <div class="kpi-icon-pill">
-            <svg class="svg-icon" viewBox="0 0 24 24"><rect x="2" y="7" width="16" height="10" rx="2" ry="2"/><line x1="22" y1="11" x2="22" y2="13"/><polyline points="10 10 8 12 12 12 10 14"/></svg>
-          </div>
-        </div>
-        <div class="kpi-number" id="kpi-avg-range">406 km</div>
-        <div class="kpi-footnote">
-          <span class="trend-badge positive">↑ 65 km</span>
-          <span>WLTP certified avg</span>
-        </div>
-      </div>
-
-      <!-- 4. Rating -->
-      <div class="kpi-card" style="--card-color: var(--accent-amber);">
-        <div class="kpi-meta">
-          <span class="kpi-label">Customer Satisfaction</span>
-          <div class="kpi-icon-pill">
-            <svg class="svg-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          </div>
-        </div>
-        <div class="kpi-number" id="kpi-avg-rating">4.21 ★</div>
-        <div class="kpi-footnote">
-          <span>Global consumer benchmark</span>
-        </div>
-      </div>
-
-      <!-- 5. CO2 Offset -->
-      <div class="kpi-card" style="--card-color: var(--accent-emerald);">
-        <div class="kpi-meta">
-          <span class="kpi-label">Annual CO2 Abatement</span>
-          <div class="kpi-icon-pill">
-            <svg class="svg-icon" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg>
-          </div>
-        </div>
-        <div class="kpi-number" id="kpi-total-co2">6,359 Tons</div>
-        <div class="kpi-footnote">
-          <span>Displaced ICE emissions</span>
-        </div>
-      </div>
-
-      <!-- 6. Active Models -->
-      <div class="kpi-card" style="--card-color: var(--accent-blue);">
-        <div class="kpi-meta">
-          <span class="kpi-label">Active Vehicle Profiles</span>
-          <div class="kpi-icon-pill">
-            <svg class="svg-icon" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
-          </div>
-        </div>
-        <div class="kpi-number" id="kpi-total-models">1,200 Models</div>
-        <div class="kpi-footnote">
-          <span>Across 12 global automakers</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- Filter Control Hub -->
-    <section class="filter-hub">
-      <div class="filter-controls-group">
-        <div class="control-field">
-          <label class="control-label" for="filter-year">
-            <svg class="svg-icon sm" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            Model Year
-          </label>
-          <select id="filter-year" class="select-styled">
-            <option value="ALL">All Years (2021-2026)</option>
-          </select>
-        </div>
-
-        <div class="control-field">
-          <label class="control-label" for="filter-mfg">
-            <svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/></svg>
-            Manufacturer
-          </label>
-          <select id="filter-mfg" class="select-styled">
-            <option value="ALL">All Manufacturers</option>
-          </select>
-        </div>
-
-        <div class="control-field">
-          <label class="control-label" for="filter-cat">
-            <svg class="svg-icon sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m10 15 5-3-5-3v6Z"/></svg>
-            Vehicle Category
-          </label>
-          <select id="filter-cat" class="select-styled">
-            <option value="ALL">All Categories</option>
-          </select>
-        </div>
-
-        <div class="control-field">
-          <label class="control-label" for="filter-tech">
-            <svg class="svg-icon sm" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-            Battery Chemistry
-          </label>
-          <select id="filter-tech" class="select-styled">
-            <option value="ALL">All Chemistries</option>
-          </select>
-        </div>
-
-        <div class="control-field">
-          <label class="control-label" for="filter-search">
-            <svg class="svg-icon sm" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            Keyword Search
-          </label>
-          <input type="text" id="filter-search" class="input-styled" placeholder="Model, country, OEM...">
-        </div>
-      </div>
-
-      <div class="filter-hub-actions">
-        <button class="btn-ghost" id="btn-reset-filters">Reset Filters</button>
-        <button class="btn-accent" id="btn-export-csv">
-          <svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          <span>Export CSV</span>
-        </button>
-      </div>
-    </section>
-
-    <!-- Navigation Tabs Rail -->
-    <nav class="tabs-rail" aria-label="Intelligence Modules">
-      <button class="nav-tab active" data-tab="tab-overview">
-        <svg class="svg-icon sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-        <span>Global Market Pulse</span>
-      </button>
-      <button class="nav-tab" data-tab="tab-emily">
-        <svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        <span>Strategy Suite (Emily Johnson)</span>
-      </button>
-      <button class="nav-tab" data-tab="tab-david">
-        <svg class="svg-icon sm" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-        <span>Competitive Intelligence (David Chen)</span>
-      </button>
-      <button class="nav-tab" data-tab="tab-sarah">
-        <svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M10 2v7.31"/><path d="M14 9.3V2"/><path d="M8.5 2h7"/><path d="M14 9.3a6.5 6.5 0 1 1-4 0"/></svg>
-        <span>Tech & Sustainability Lab (Dr. Sarah)</span>
-      </button>
-      <button class="nav-tab" data-tab="tab-explorer">
-        <svg class="svg-icon sm" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-        <span>Global Fleet Explorer</span>
-      </button>
-      <button class="nav-tab" data-tab="tab-story">
-        <svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-        <span>Executive Storyboard</span>
-      </button>
-      <button class="nav-tab" data-tab="tab-tableau">
-        <svg class="svg-icon sm" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
-        <span>Tableau Integration & Architecture</span>
-      </button>
-    </nav>
-
-    <!-- TAB 1: GLOBAL MARKET PULSE -->
-    <section class="view-pane active" id="tab-overview">
-      <div class="analytics-grid">
-        <div class="analytics-card">
-          <div class="card-top-bar">
-            <div class="card-title-group">
-              <h3>Annual Sales Volume by Vehicle Category</h3>
-              <p>Annual market volume breakdown across SUVs, Sedans, Hatchbacks, Two-Wheelers, Trucks & Buses</p>
-            </div>
-            <span class="badge-chem badge-lfp">SUV Leads (45%+)</span>
-          </div>
-          <div class="chart-viewport">
-            <canvas id="chartSalesByCategory"></canvas>
-          </div>
-        </div>
-
-        <div class="analytics-card">
-          <div class="card-top-bar">
-            <div class="card-title-group">
-              <h3>Automaker Global Market Share</h3>
-              <p>Delivery volume distribution among top international automotive conglomerates</p>
-            </div>
-            <span class="badge-chem badge-nmc">Top OEM: Tesla & BYD</span>
-          </div>
-          <div class="chart-viewport">
-            <canvas id="chartMarketShare"></canvas>
-          </div>
-        </div>
-
-        <div class="analytics-card">
-          <div class="card-top-bar">
-            <div class="card-title-group">
-              <h3>Battery Chemistry Adoption Trajectory (2021–2026)</h3>
-              <p>Technological shift from traditional NMC/NCA towards LFP, Sodium-Ion, and Next-Gen Solid-State</p>
-            </div>
-            <span class="badge-chem badge-solid">LFP & Solid-State Rise</span>
-          </div>
-          <div class="chart-viewport">
-            <canvas id="chartTechAdoption"></canvas>
-          </div>
-        </div>
-
-        <div class="analytics-card">
-          <div class="card-top-bar">
-            <div class="card-title-group">
-              <h3>Geographical Production & Gigafactory Concentration</h3>
-              <p>Annual vehicle manufacturing and cell assembly distribution by country of origin</p>
-            </div>
-            <span class="badge-chem badge-lfp" style="background: rgba(0, 240, 255, 0.18); color: #38bdf8;">China & EU Core Hubs</span>
-          </div>
-          <div class="chart-viewport">
-            <canvas id="chartGeoDistribution"></canvas>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- TAB 2: SCENARIO 1 - EMILY JOHNSON -->
-    <section class="view-pane" id="tab-emily">
-      <div class="scenario-briefing-card" style="--scenario-color: var(--accent-cyan); --scenario-tag-bg: rgba(0, 240, 255, 0.15);">
-        <div class="scenario-text">
-          <span class="scenario-tag">Market Strategy Directorate</span>
-          <h2 class="scenario-heading">Executive Briefing: Emily Johnson — EV Market Strategy Director</h2>
-          <p class="scenario-desc">
-            Evaluating category contribution to gross annual sales volume, identifying market-leading manufacturers, and assessing consumer satisfaction dynamics to optimize brand product portfolios.
-          </p>
-          <div class="scenario-chips">
-            <span class="scenario-chip"><svg class="svg-icon sm" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg> Category Revenue Contribution</span>
-            <span class="scenario-chip"><svg class="svg-icon sm" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> Customer Satisfaction Index</span>
-            <span class="scenario-chip"><svg class="svg-icon sm" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg> C-Segment SUV Margins</span>
-          </div>
-        </div>
-        <div class="scenario-sidebar-metric">
-          <h4>
-            <svg class="svg-icon sm" viewBox="0 0 24 24" style="color: var(--accent-cyan);"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-            Strategic Director Finding
-          </h4>
-          <p id="emily-summary-text">
-            Electric SUV and Two-Wheeler segments command over 58% of aggregate global consumer volume. Modular platforms supporting LFP batteries cut bill of materials (BOM) by 18%.
-          </p>
-        </div>
-      </div>
-
-      <div class="analytics-grid">
-        <div class="analytics-card">
-          <div class="card-title-group">
-            <h3>Vehicle Category Delivery Volume vs Gross Revenue</h3>
-            <p>Dual-axis evaluation of total unit sales volume (Millions) vs revenue generated (Billions USD)</p>
-          </div>
-          <div class="chart-viewport">
-            <canvas id="chartEmilyCategoryAnalysis"></canvas>
-          </div>
-        </div>
-
-        <div class="analytics-card">
-          <div class="card-title-group">
-            <h3>Customer Satisfaction Rating vs Base Vehicle Price</h3>
-            <p>Correlation between price point tiers and consumer satisfaction scores (1.0 to 5.0 Stars)</p>
-          </div>
-          <div class="chart-viewport">
-            <canvas id="chartEmilyRatingVsPrice"></canvas>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- TAB 3: SCENARIO 2 - DAVID CHEN -->
-    <section class="view-pane" id="tab-david">
-      <div class="scenario-briefing-card" style="--scenario-color: var(--accent-emerald); --scenario-tag-bg: rgba(16, 185, 129, 0.15);">
-        <div class="scenario-text">
-          <span class="scenario-tag">Automotive Business Intelligence</span>
-          <h2 class="scenario-heading">Competitive Matrix: David Chen — Business Intelligence Manager</h2>
-          <p class="scenario-desc">
-            Benchmarking competitor market shares, localized supply chains, battery cell procurement strategies, and price-to-range ($/km) efficiency to advise automotive market entrants.
-          </p>
-          <div class="scenario-chips">
-            <span class="scenario-chip"><svg class="svg-icon sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 10 10H12V2z"/></svg> OEM Market Share Matrix</span>
-            <span class="scenario-chip"><svg class="svg-icon sm" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Chemistry Sourcing Mix</span>
-            <span class="scenario-chip"><svg class="svg-icon sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/></svg> Price-to-Range Benchmark ($/km)</span>
-          </div>
-        </div>
-        <div class="scenario-sidebar-metric">
-          <h4>
-            <svg class="svg-icon sm" viewBox="0 0 24 24" style="color: var(--accent-emerald);"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-            Competitive Finding
-          </h4>
-          <p id="david-summary-text">
-            Automakers with dual-chemistry strategies (LFP for entry models, NMC for long range) achieve the lowest price-per-km ratio ($85–$95/km) without eroding margin.
-          </p>
-        </div>
-      </div>
-
-      <div class="analytics-grid">
-        <div class="analytics-card">
-          <div class="card-title-group">
-            <h3>Battery Chemistry Allocation Across Leading Automakers</h3>
-            <p>Stacked distribution of battery chemistries deployed by each major automotive conglomerate</p>
-          </div>
-          <div class="chart-viewport">
-            <canvas id="chartDavidTechDistribution"></canvas>
-          </div>
-        </div>
-
-        <div class="analytics-card">
-          <div class="card-title-group">
-            <h3>Price-to-Range Cost Efficiency Benchmark ($/km)</h3>
-            <p>Average consumer capital cost per kilometer of certified WLTP driving range by brand</p>
-          </div>
-          <div class="chart-viewport">
-            <canvas id="chartDavidPricePerKm"></canvas>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- TAB 4: SCENARIO 3 - DR. SARAH WILLIAMS -->
-    <section class="view-pane" id="tab-sarah">
-      <div class="scenario-briefing-card" style="--scenario-color: var(--accent-purple); --scenario-tag-bg: rgba(139, 92, 246, 0.15);">
-        <div class="scenario-text">
-          <span class="scenario-tag">Sustainable Mobility Research</span>
-          <h2 class="scenario-heading">Technology Lab: Dr. Sarah Williams — Research Analyst</h2>
-          <p class="scenario-desc">
-            Investigating battery chemistry innovations (Solid-State, Sodium-Ion), fast-charging performance curves, fleet energy efficiency (Wh/km), and environmental tailpipe emission displacement.
-          </p>
-          <div class="scenario-chips">
-            <span class="scenario-chip"><svg class="svg-icon sm" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> Solid-State & Sodium-Ion Chemistries</span>
-            <span class="scenario-chip"><svg class="svg-icon sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Fast-Charge 10-80% Curves</span>
-            <span class="scenario-chip"><svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/></svg> Life-Cycle CO2 Displacement</span>
-          </div>
-        </div>
-        <div class="scenario-sidebar-metric">
-          <h4>
-            <svg class="svg-icon sm" viewBox="0 0 24 24" style="color: var(--accent-purple);"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-            Sustainability Finding
-          </h4>
-          <p id="sarah-summary-text">
-            Commercial electric buses and trucks yield 5.4x greater annual CO2 abatement per kWh installed than passenger sedans, providing immediate urban air quality benefits.
-          </p>
-        </div>
-      </div>
-
-      <div class="analytics-grid">
-        <div class="analytics-card">
-          <div class="card-title-group">
-            <h3>Battery Chemistry: Range vs Fast-Charge Velocity</h3>
-            <p>Comparison of average driving range (km) vs 10-80% DC fast charge duration (Minutes)</p>
-          </div>
-          <div class="chart-viewport">
-            <canvas id="chartSarahBatteryComparison"></canvas>
-          </div>
-        </div>
-
-        <div class="analytics-card">
-          <div class="card-title-group">
-            <h3>Annual Tailpipe CO2 Abatement by Vehicle Category</h3>
-            <p>Estimated metric tons of greenhouse gas emissions displaced annually vs internal combustion equivalents</p>
-          </div>
-          <div class="chart-viewport">
-            <canvas id="chartSarahCO2Savings"></canvas>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- TAB 5: GLOBAL FLEET EXPLORER -->
-    <section class="view-pane" id="tab-explorer">
-      <div class="data-table-card">
-        <div class="table-header-toolbar">
-          <div>
-            <h3 style="font-family: var(--font-heading); font-size: 1.15rem;">Global Electric Vehicle Database</h3>
-            <p style="font-size: 0.78rem; color: var(--text-muted);">Interactive database with dynamic multi-attribute sorting and live filter telemetry</p>
-          </div>
-          <div style="display: flex; gap: 8px;">
-            <button class="btn-ghost" onclick="document.getElementById('filter-search').focus()">Search Telemetry</button>
-            <button class="btn-accent" onclick="document.getElementById('btn-export-csv').click()">Download Clean CSV</button>
-          </div>
-        </div>
-
-        <div class="table-scroll-container">
-          <table class="styled-table">
-            <thead>
-              <tr>
-                <th data-sort="Vehicle_ID">ID ⇅</th>
-                <th data-sort="Year">Year ⇅</th>
-                <th data-sort="Manufacturer">Manufacturer ⇅</th>
-                <th data-sort="Model_Name">Model ⇅</th>
-                <th data-sort="Vehicle_Category">Category ⇅</th>
-                <th data-sort="Battery_Technology">Chemistry ⇅</th>
-                <th data-sort="Battery_Capacity_kWh">Pack (kWh) ⇅</th>
-                <th data-sort="Driving_Range_km">Range (km) ⇅</th>
-                <th data-sort="Base_Price_USD">Base Price ($) ⇅</th>
-                <th data-sort="Customer_Rating">Satisfaction ⇅</th>
-              </tr>
-            </thead>
-            <tbody id="table-body">
-              <!-- Rendered dynamically -->
-            </tbody>
-          </table>
-        </div>
-
-        <div class="table-footer-controls">
-          <span id="table-pagination-info">Showing 1 to 15 of 1,200 models</span>
-          <div style="display: flex; gap: 8px;">
-            <button class="btn-ghost" id="btn-prev-page">Previous</button>
-            <button class="btn-ghost" id="btn-next-page">Next</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- TAB 6: EXECUTIVE STORYBOARD -->
-    <section class="view-pane" id="tab-story">
-      <div class="storyboard-wrapper">
-        <div class="storyboard-card">
-          <h3>
-            <svg class="svg-icon" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-            Strategic Story: Global Electrification & Battery Transition
-          </h3>
-          <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.6;">
-            A rigorous data-driven narrative connecting annual market deliveries, battery chemistry breakthroughs, and regional supply chain dynamics into executive guidance.
-          </p>
-
-          <div class="storyboard-columns">
-            <div class="storyboard-col">
-              <span class="scenario-tag" style="background: rgba(0, 240, 255, 0.15); color: var(--accent-cyan);">Phase 1 • Market Expansion</span>
-              <h4>The SUV & Urban Two-Wheeler Surge</h4>
-              <p>
-                From 2021 to 2026, electric SUV deliveries maintained a 28% compound annual growth rate, contributing 45%+ of gross revenue. In developing urban economies, electric two-wheelers saw aggressive adoption due to low entry acquisition costs and rapid payback cycles.
-              </p>
-            </div>
-
-            <div class="storyboard-col">
-              <span class="scenario-tag" style="background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald);">Phase 2 • Chemistry Realignment</span>
-              <h4>The LFP & Sodium-Ion Disruption</h4>
-              <p>
-                Escalating nickel and cobalt prices catalyzed a global migration toward LFP (Lithium Iron Phosphate). LFP now commands 48% of mass-market EV deliveries due to superior thermal stability and lower degradation rates, while Sodium-Ion addresses sub-$20k micro-mobility.
-              </p>
-            </div>
-
-            <div class="storyboard-col">
-              <span class="scenario-tag" style="background: rgba(139, 92, 246, 0.15); color: var(--accent-purple);">Phase 3 • Next-Gen Scaling</span>
-              <h4>Solid-State & Heavy Commercial Fleets</h4>
-              <p>
-                From 2025 onwards, Solid-State cells entered premium flagship models (Tesla Cybertruck, BMW i7, NIO ET7), providing 35% higher energy density and sub-15 minute fast charging. Simultaneously, transit bus and commercial truck fleets deliver the highest emissions abatement per kWh.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="storyboard-card">
-          <h3>
-            <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-            Key Recommendations for Industry Stakeholders
-          </h3>
-          <div class="storyboard-columns">
-            <div class="storyboard-col">
-              <h4>For Automotive OEMs (Emily Johnson)</h4>
-              <p>• Standardize on modular skateboard platforms supporting both LFP and NMC cells.<br>• Prioritize C-segment SUVs ($32,000–$45,000) for the highest volume-to-margin threshold.<br>• Accelerate 800V charging architectures to push DC fast charging below 20 minutes.</p>
-            </div>
-            <div class="storyboard-col">
-              <h4>For Business Intelligence (David Chen)</h4>
-              <p>• Counsel OEMs on regional supply chain localization to circumvent critical mineral tariff risks.<br>• Track Price-to-Range efficiency ($/km) as the leading predictor of market share capture.<br>• Secure multi-year off-take agreements with cell gigafactories.</p>
-            </div>
-            <div class="storyboard-col">
-              <h4>For Policy & Regulators (Dr. Sarah Williams)</h4>
-              <p>• Incentivize municipal public transit bus conversion for maximum CO2 displacement per subsidy dollar.<br>• Establish standardized Megawatt Charging Systems (MCS) for commercial freight corridors.<br>• Synchronize clean grid expansion with heavy-duty fast-charging hubs.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- TAB 7: TABLEAU INTEGRATION & ARCHITECTURE -->
-    <section class="view-pane" id="tab-tableau">
-      <div class="storyboard-card">
-        <h3>
-          <svg class="svg-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
-          Tableau Desktop & Tableau Public Integration Architecture
-        </h3>
-        <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 20px;">
-          This platform was engineered for native interoperability with Tableau Desktop and Tableau Public. The dataset <code>data/ev_market_data.csv</code> features pre-engineered measures, dimensions, and calculated fields.
-        </p>
-
-        <div class="storyboard-columns">
-          <div class="storyboard-col">
-            <h4>1. Native Data Connection</h4>
-            <p>Connect Tableau to <code>data/ev_market_data.csv</code> via <em>Text File</em>. All 20 attributes and schema data types map automatically without manual reformatting.</p>
-          </div>
-          <div class="storyboard-col">
-            <h4>2. Pre-Configured Calculated Fields</h4>
-            <p>
-              • <code>Price per km = [Base Price USD] / [Driving Range km]</code><br>
-              • <code>Market Share % = SUM([Units Sold Annual]) / TOTAL(SUM([Units Sold Annual]))</code><br>
-              • <code>Revenue in Billions = SUM([Annual Revenue USD]) / 1000000000</code>
-            </p>
-          </div>
-          <div class="storyboard-col">
-            <h4>3. Cloud & Server Deployment</h4>
-            <p>Save workbook to Tableau Public via <code>Server ➔ Tableau Public ➔ Save to Tableau Public As...</code> to generate an interactive public workbook link.</p>
-          </div>
-        </div>
-
-        <div style="margin-top: 24px; background: rgba(0, 0, 0, 0.4); border: 1px dashed var(--accent-cyan); border-radius: var(--radius-sm); padding: 22px;">
-          <h4 style="color: var(--accent-cyan); font-size: 0.95rem; margin-bottom: 8px;">Interactive Tableau Web Embed Simulation</h4>
-          <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 14px;">
-            The web integration layer seamlessly embeds Tableau Public workbooks alongside this interactive JavaScript dashboard:
-          </p>
-          <div class="code-snippet">
-&lt;iframe src="https://public.tableau.com/views/EV_Industry_Analytics_Dashboard/Overview" width="100%" height="600" frameborder="0"&gt;&lt;/iframe&gt;
-          </div>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- Platform Methodology & Architecture Modal -->
-  <div class="modal-overlay" id="modal-methodology">
-    <div class="modal-dialog">
+  <!-- Raw Data Inspection Modal -->
+  <div class="modal-overlay" id="dataTableModal">
+    <div class="modal-window">
       <div class="modal-header">
-        <h2>⚡ Platform Methodology & Data Pipeline</h2>
-        <button class="modal-close-btn" id="btn-close-methodology">&times;</button>
+        <h2>EV Fleet Explorer (1,200 Verified Records from data/ev_market_data.csv)</h2>
+        <button class="modal-close-btn" id="btnCloseModal">&times;</button>
       </div>
-
-      <div style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">
-        <h4 style="color: var(--accent-cyan); margin-bottom: 6px;">1. Analytical Scope & Architecture</h4>
-        <p>
-          This platform evaluates 1,200 verified EV profiles spanning 2021 to 2026. The data pipeline ingests 20 multi-dimensional attributes across 12 major automakers, 6 vehicle categories, and 5 battery chemistries.
-        </p>
-
-        <h4 style="color: var(--accent-cyan); margin-top: 16px; margin-bottom: 6px;">2. Performance & Benchmark Testing (Epic 6)</h4>
-        <p>
-          Automated integrity testing verified 0 missing records and 0 out-of-range values. 1,000 complex multi-filter aggregations executed with an average query latency of 7.6 ms (logged in <code>data/performance_benchmark_report.json</code>).
-        </p>
-
-        <h4 style="color: var(--accent-cyan); margin-top: 16px; margin-bottom: 6px;">3. Project Documentation & Tableau Guide</h4>
-        <p>
-          Comprehensive documentation files are available in this repository:
-          <br>• <code>README.md</code> — Project overview and architecture.
-          <br>• <code>PROJECT_REPORT.md</code> — Complete 8-Epic & 14-Task Capstone Report.
-          <br>• <code>TABLEAU_GUIDE.md</code> — Tableau Desktop / Public workbook setup and calculated fields.
-          <br>• <code>DEMO_SCRIPT.md</code> — 3-5 minute presentation script for mentor evaluation.
-          <br>• <code>SUBMISSION_GUIDE.md</code> — Step-by-step instructions for repository and demo deployment.
-        </p>
+      <div class="modal-body">
+        <table class="data-table-simple">
+          <thead>
+            <tr>
+              <th>Vehicle ID</th>
+              <th>Manufacturer</th>
+              <th>Model Name</th>
+              <th>Category</th>
+              <th>Battery Tech</th>
+              <th>Capacity (kWh)</th>
+              <th>Range (km)</th>
+              <th>Base Price ($)</th>
+              <th>Annual Units</th>
+              <th>Rating</th>
+              <th>Country</th>
+            </tr>
+          </thead>
+          <tbody id="dataTableBody">
+            <!-- Dynamically populated from CSV records -->
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
 
-  <!-- ========== AUTH MODAL ========== -->
-  <div class="modal-overlay" id="modal-auth" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
-    <div class="modal-dialog auth-modal-dialog">
-
-      <!-- Logo inside modal -->
-      <div class="auth-modal-logo">
-        <svg width="44" height="44" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="logoGrad2" x1="0" y1="0" x2="38" y2="38" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stop-color="#4f46e5"/>
-              <stop offset="100%" stop-color="#0ea5e9"/>
-            </linearGradient>
-          </defs>
-          <rect width="38" height="38" rx="9" fill="url(#logoGrad2)"/>
-          <path d="M21 7L13 20h7l-1 11 9-13h-7l1-11z" fill="white" opacity="0.95"/>
-          <rect x="6" y="27" width="3" height="5" rx="1" fill="white" opacity="0.45"/>
-          <rect x="10.5" y="24" width="3" height="8" rx="1" fill="white" opacity="0.55"/>
-        </svg>
-        <div>
-          <div class="auth-modal-brand-name">EV Market Insights</div>
-          <div class="auth-modal-brand-sub">Transportation Analytics Platform</div>
+  <!-- Modern Authentication Modal (Sign In / Sign Up) -->
+  <div class="auth-modal-overlay" id="auth-modal">
+    <div class="auth-modal-card">
+      <div class="auth-modal-header">
+        <div class="auth-modal-title">
+          <h2>EV Analytics Access</h2>
+          <p>Sign in to unlock live forecasting &amp; custom filters</p>
         </div>
+        <button class="auth-close-btn" id="auth-modal-close" title="Close modal">&times;</button>
       </div>
 
-      <!-- Tabs: Sign In / Sign Up -->
-      <div class="auth-tabs">
-        <button class="auth-tab active" id="auth-tab-signin" data-authtab="signin">Sign In</button>
-        <button class="auth-tab" id="auth-tab-signup" data-authtab="signup">Sign Up</button>
+      <!-- Auth Tabs: Sign In / Sign Up -->
+      <div class="auth-tabs-row">
+        <button class="auth-tab-btn active" id="tab-signin">Sign In</button>
+        <button class="auth-tab-btn" id="tab-signup">Create Account</button>
       </div>
 
-      <!-- Error / Success message -->
-      <div class="auth-message" id="auth-message" style="display:none;"></div>
+      <div class="auth-modal-body">
+        <div class="auth-msg" id="auth-msg"></div>
 
-      <!-- Sign In Form -->
-      <form class="auth-form" id="form-signin" novalidate>
-        <div class="auth-field">
-          <label class="auth-label" for="signin-email">Email address</label>
-          <input type="email" id="signin-email" class="auth-input" placeholder="you@example.com" autocomplete="email" required>
-        </div>
-        <div class="auth-field">
-          <label class="auth-label" for="signin-password">Password</label>
-          <div class="auth-input-wrap">
-            <input type="password" id="signin-password" class="auth-input" placeholder="••••••••" autocomplete="current-password" required>
-            <button type="button" class="auth-eye-btn" id="eye-signin" title="Toggle password">
-              <svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-            </button>
-          </div>
-        </div>
-        <button type="submit" class="btn-auth-submit" id="btn-signin-submit">
-          <span class="auth-btn-text">Sign In</span>
-          <span class="auth-btn-loader" style="display:none;">⏳</span>
+        <!-- 1-Click Google Sign In -->
+        <button type="button" class="btn-social-google" id="btn-google-auth">
+          <svg width="18" height="18" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+          </svg>
+          <span>Continue with Google</span>
         </button>
-        <p class="auth-footer-note">Don't have an account? <button type="button" class="auth-switch-link" data-switch="signup">Create one</button></p>
-      </form>
 
-      <!-- Sign Up Form -->
-      <form class="auth-form" id="form-signup" novalidate style="display:none;">
-        <div class="auth-field">
-          <label class="auth-label" for="signup-name">Full name</label>
-          <input type="text" id="signup-name" class="auth-input" placeholder="Jane Smith" autocomplete="name" required>
+        <div class="auth-divider-line">
+          <span>Or with Email / Mobile Number</span>
         </div>
-        <div class="auth-field">
-          <label class="auth-label" for="signup-email">Email address</label>
-          <input type="email" id="signup-email" class="auth-input" placeholder="you@example.com" autocomplete="email" required>
-        </div>
-        <div class="auth-field">
-          <label class="auth-label" for="signup-password">Password</label>
-          <div class="auth-input-wrap">
-            <input type="password" id="signup-password" class="auth-input" placeholder="Min 6 characters" autocomplete="new-password" required>
-            <button type="button" class="auth-eye-btn" id="eye-signup" title="Toggle password">
-              <svg class="svg-icon sm" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-            </button>
-          </div>
-        </div>
-        <button type="submit" class="btn-auth-submit" id="btn-signup-submit">
-          <span class="auth-btn-text">Create Account</span>
-          <span class="auth-btn-loader" style="display:none;">⏳</span>
-        </button>
-        <p class="auth-footer-note">Already have an account? <button type="button" class="auth-switch-link" data-switch="signin">Sign in</button></p>
-      </form>
 
-      <button class="modal-close-btn auth-modal-close" id="btn-auth-close" aria-label="Close">&times;</button>
+        <!-- Sign In Form -->
+        <div class="auth-pane active" id="pane-signin">
+          <form id="form-signin">
+            <div class="auth-input-group">
+              <label class="auth-label" for="signin-identifier">Email Address or Phone Number</label>
+              <div class="auth-input-wrapper">
+                <svg class="auth-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <input type="text" id="signin-identifier" class="auth-input" placeholder="e.g. name@company.com or +91 9876543210" autocomplete="username" required>
+              </div>
+            </div>
+
+            <div class="auth-input-group">
+              <label class="auth-label" for="signin-password">Password</label>
+              <div class="auth-input-wrapper">
+                <svg class="auth-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <input type="password" id="signin-password" class="auth-input" placeholder="••••••••" autocomplete="current-password" required>
+                <button type="button" class="auth-eye-btn" id="eye-signin" title="Toggle password visibility">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="auth-extra-row">
+              <label>
+                <input type="checkbox" id="signin-remember" checked>
+                <span>Remember me</span>
+              </label>
+              <a href="#" class="auth-link" onclick="alert('Password reset link has been sent to your registered contact.'); return false;">Forgot password?</a>
+            </div>
+
+            <button type="submit" class="btn-auth-submit">Sign In to Dashboard</button>
+
+            <div class="auth-footer-note">
+              Don't have an account? <a href="#" class="auth-link auth-switch-link" data-switch="signup">Create one now</a>
+            </div>
+          </form>
+        </div>
+
+        <!-- Sign Up Form -->
+        <div class="auth-pane" id="pane-signup">
+          <form id="form-signup">
+            <div class="auth-input-group">
+              <label class="auth-label" for="signup-name">Full Name</label>
+              <div class="auth-input-wrapper">
+                <svg class="auth-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <input type="text" id="signup-name" class="auth-input" placeholder="e.g. Alex Morgan" required>
+              </div>
+            </div>
+
+            <div class="auth-input-group">
+              <label class="auth-label" for="signup-identifier">Email Address or Phone Number</label>
+              <div class="auth-input-wrapper">
+                <svg class="auth-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                <input type="text" id="signup-identifier" class="auth-input" placeholder="e.g. name@company.com or +91 9876543210" required>
+              </div>
+            </div>
+
+            <div class="auth-input-group">
+              <label class="auth-label" for="signup-password">Create Password (Min 6 chars)</label>
+              <div class="auth-input-wrapper">
+                <svg class="auth-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <input type="password" id="signup-password" class="auth-input" placeholder="••••••••" required>
+                <button type="button" class="auth-eye-btn" id="eye-signup" title="Toggle password visibility">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="auth-extra-row">
+              <label>
+                <input type="checkbox" id="signup-terms" checked required>
+                <span>I agree to Analytics Terms &amp; Privacy Policy</span>
+              </label>
+            </div>
+
+            <button type="submit" class="btn-auth-submit">Create Free Account</button>
+
+            <div class="auth-footer-note">
+              Already have an account? <a href="#" class="auth-link auth-switch-link" data-switch="signin">Sign In</a>
+            </div>
+          </form>
+        </div>
+
+      </div>
     </div>
   </div>
 
-  <!-- Footer -->
-  <footer class="app-footer">
-    <p>Electric Vehicle Market Performance &amp; Insights | Enterprise Transportation Analytics Suite</p>
-    <p style="margin-top: 4px; font-size: 0.74rem;">All 8 Epics &amp; 14 Tasks Implemented • Tableau Ready • Zero External Runtime Dependencies</p>
-  </footer>
-
-  <!-- Scripts -->
+  <!-- Local libraries & Interactive Tableau dynamic engine -->
   <script src="js/chart.min.js"></script>
-  <script>
-    if (typeof Chart === 'undefined') {
-      document.write('<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"><\/script>');
-    }
-  </script>
   <script src="js/ev_data.js"></script>
-  <script src="js/charts.js"></script>
-  <script src="js/scenarios.js"></script>
-  <script src="js/app.js"></script>
   <script src="js/auth.js"></script>
+  <script src="js/tableau_dashboard.js"></script>
 </body>
 </html>
