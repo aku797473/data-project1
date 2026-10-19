@@ -10,8 +10,8 @@
 
 | Field on Portal | Exact Value / Link to Paste | Description |
 | :--- | :--- | :--- |
-| **Add Github Link** | `https://github.com/<YOUR_USERNAME>/ev-market-data-analytics` | Public GitHub repository containing all source code and datasets |
-| **Add Demo Link** | `https://<YOUR_USERNAME>.github.io/ev-market-data-analytics/` | Live interactive Web Dashboard hosted via GitHub Pages |
+| **Add Github Link** | `https://github.com/aku797473/data-project1` | Public GitHub repository containing all source code and datasets |
+| **Add Demo Link** | `https://aku797473.github.io/data-project1/` | Live interactive Web Dashboard hosted via GitHub Pages |
 
 ---
 
