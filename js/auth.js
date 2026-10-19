@@ -1,11 +1,10 @@
 /**
- * auth.js - Frontend JWT Authentication Module
- * Electric Vehicle Market Performance & Insights
+ * auth.js - Enhanced Enterprise Authentication Module
+ * Supports Email, Phone Number, Password, and Google 1-Click Sign-In
  */
 (function EVAuth() {
   "use strict";
 
-  // Base64URL encode
   function b64url(str) {
     return btoa(unescape(encodeURIComponent(str)))
       .replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
@@ -16,7 +15,7 @@
     try { return decodeURIComponent(escape(atob(str))); } catch { return null; }
   }
 
-  const JWT_SECRET = "ev-insights-analytics-2024";
+  const JWT_SECRET = "ev-insights-analytics-2026-secure-jwt";
 
   async function signJWT(payload) {
     const header = b64url(JSON.stringify({ alg: "HS256", typ: "JWT" }));
@@ -58,89 +57,109 @@
   const TOKEN_KEY = "ev_auth_token";
 
   function getUsers() {
-    try { return JSON.parse(localStorage.getItem(USERS_KEY)) || []; } catch { return []; }
+    try {
+      const stored = localStorage.getItem(USERS_KEY);
+      if (stored) return JSON.parse(stored);
+    } catch { /* empty */ }
+    // Default demo user
+    const def = [{
+      id: "demo-user-1",
+      name: "Alex Morgan",
+      identifier: "demo@ev-analytics.com",
+      phone: "+91 98765 43210",
+      pwHash: hashPw("demo1234"),
+      createdAt: new Date().toISOString()
+    }];
+    saveUsers(def);
+    return def;
   }
-  function saveUsers(u) { localStorage.setItem(USERS_KEY, JSON.stringify(u)); }
 
-  function hashPw(pw) {
+  function saveUsers(users) {
+    try { localStorage.setItem(USERS_KEY, JSON.stringify(users)); } catch { /* empty */ }
+  }
+
+  function hashPw(str) {
     let h = 0x811c9dc5;
-    for (let i = 0; i < pw.length; i++) {
-      h ^= pw.charCodeAt(i);
-      h = (Math.imul(h, 0x01000193)) >>> 0;
+    for (let i = 0; i < str.length; i++) {
+      h ^= str.charCodeAt(i);
+      h = (h * 0x01000193) >>> 0;
     }
-    return h.toString(16).padStart(8, "0");
+    return h.toString(16);
   }
 
   const $ = id => document.getElementById(id);
 
-  const modal      = $("modal-auth");
-  const btnOpen    = $("btn-auth-open");
-  const btnClose   = $("btn-auth-close");
-  const userPill   = $("auth-user-pill");
-  const avatarEl   = $("auth-avatar-initials");
-  const usernameEl = $("auth-username-label");
-  const btnSignout = $("btn-auth-signout");
-  const msgEl      = $("auth-message");
-  const tabSignin  = $("auth-tab-signin");
-  const tabSignup  = $("auth-tab-signup");
-  const formSignin = $("form-signin");
-  const formSignup = $("form-signup");
-
-  function openModal(tab) {
-    if (!modal) return;
-    modal.classList.add("active");
-    document.body.style.overflow = "hidden";
-    switchTab(tab || "signin");
-    clearMsg();
+  function showMsg(text, type = "error") {
+    const box = $("auth-msg");
+    if (!box) return;
+    box.textContent = text;
+    box.className = "auth-msg visible " + type;
   }
-  function closeModal() {
-    if (!modal) return;
-    modal.classList.remove("active");
-    document.body.style.overflow = "";
+
+  function clearMsg() {
+    const box = $("auth-msg");
+    if (box) { box.textContent = ""; box.className = "auth-msg"; }
+  }
+
+  function openModal(tab = "signin") {
     clearMsg();
-    if (formSignin) formSignin.reset();
-    if (formSignup) formSignup.reset();
+    const modal = $("auth-modal");
+    if (modal) {
+      modal.classList.add("active");
+      document.body.style.overflow = "hidden";
+      switchTab(tab);
+    }
+  }
+
+  function closeModal() {
+    const modal = $("auth-modal");
+    if (modal) {
+      modal.classList.remove("active");
+      document.body.style.overflow = "";
+    }
   }
 
   function switchTab(tab) {
-    if (!tabSignin || !tabSignup || !formSignin || !formSignup) return;
-    if (tab === "signin") {
-      tabSignin.classList.add("active");
-      tabSignup.classList.remove("active");
-      formSignin.style.display = "";
-      formSignup.style.display = "none";
-    } else {
-      tabSignup.classList.add("active");
-      tabSignin.classList.remove("active");
-      formSignup.style.display = "";
-      formSignin.style.display = "none";
-    }
     clearMsg();
-  }
+    const tabIn = $("tab-signin"), tabUp = $("tab-signup");
+    const paneIn = $("pane-signin"), paneUp = $("pane-signup");
+    if (!tabIn || !tabUp || !paneIn || !paneUp) return;
 
-  function showMsg(txt, type) {
-    if (!msgEl) return;
-    msgEl.textContent = txt;
-    msgEl.className = "auth-message auth-message-" + (type || "error");
-    msgEl.style.display = "";
-  }
-  function clearMsg() {
-    if (msgEl) { msgEl.style.display = "none"; msgEl.textContent = ""; }
+    if (tab === "signin") {
+      tabIn.classList.add("active");
+      tabUp.classList.remove("active");
+      paneIn.classList.add("active");
+      paneUp.classList.remove("active");
+      setTimeout(() => $("signin-identifier")?.focus(), 100);
+    } else {
+      tabUp.classList.add("active");
+      tabIn.classList.remove("active");
+      paneUp.classList.add("active");
+      paneIn.classList.remove("active");
+      setTimeout(() => $("signup-name")?.focus(), 100);
+    }
   }
 
   function updateNav(user) {
-    if (!btnOpen || !userPill) return;
+    const btnOpen = $("btn-auth-open");
+    const userPill = $("auth-user-pill");
+    const label = $("auth-username-label");
+    const avatar = $("auth-avatar-initials");
+
     if (user) {
-      btnOpen.style.display = "none";
-      userPill.style.display = "";
-      const initials = user.name
-        ? user.name.split(" ").map(w => w[0]).join("").toUpperCase().slice(0, 2)
-        : user.email.slice(0, 2).toUpperCase();
-      if (avatarEl)   avatarEl.textContent   = initials;
-      if (usernameEl) usernameEl.textContent = user.name || user.email.split("@")[0];
+      if (btnOpen) btnOpen.style.display = "none";
+      if (userPill) userPill.style.display = "inline-flex";
+      const displayName = user.name || user.identifier || "Analyst";
+      if (label) label.textContent = displayName.split(" ")[0];
+      if (avatar) {
+        const parts = displayName.trim().split(" ");
+        avatar.textContent = parts.length > 1
+          ? (parts[0][0] + parts[1][0]).toUpperCase()
+          : parts[0].slice(0, 2).toUpperCase();
+      }
     } else {
-      btnOpen.style.display = "";
-      userPill.style.display = "none";
+      if (btnOpen) btnOpen.style.display = "inline-flex";
+      if (userPill) userPill.style.display = "none";
     }
   }
 
@@ -148,70 +167,189 @@
     const token = localStorage.getItem(TOKEN_KEY);
     if (!token) { updateNav(null); return; }
     const p = await verifyJWT(token);
-    if (p) { updateNav({ name: p.name, email: p.email }); }
+    if (p) { updateNav({ name: p.name, identifier: p.identifier }); }
     else   { localStorage.removeItem(TOKEN_KEY); updateNav(null); }
   }
 
   async function handleSignIn(e) {
-    e.preventDefault(); clearMsg();
-    const email = ($("signin-email")?.value || "").trim().toLowerCase();
-    const pw    = $("signin-password")?.value || "";
-    if (!email || !pw) { showMsg("Please fill in all fields."); return; }
-    const user = getUsers().find(u => u.email === email);
-    if (!user || user.pwHash !== hashPw(pw)) { showMsg("Incorrect email or password."); return; }
-    const token = await signJWT({ sub: user.id, email: user.email, name: user.name,
-      iat: Math.floor(Date.now()/1000), exp: Math.floor(Date.now()/1000) + 604800 });
+    e.preventDefault();
+    clearMsg();
+    const identifier = ($("signin-identifier")?.value || "").trim().toLowerCase();
+    const pw = $("signin-password")?.value || "";
+
+    if (!identifier || !pw) {
+      showMsg("Please enter your email/phone and password.");
+      return;
+    }
+
+    const users = getUsers();
+    const user = users.find(u =>
+      (u.identifier && u.identifier.toLowerCase() === identifier) ||
+      (u.phone && u.phone.replace(/\s+/g, "") === identifier.replace(/\s+/g, ""))
+    );
+
+    if (!user || user.pwHash !== hashPw(pw)) {
+      showMsg("Incorrect Email/Phone or Password.");
+      return;
+    }
+
+    const token = await signJWT({
+      sub: user.id,
+      identifier: user.identifier || user.phone,
+      name: user.name,
+      iat: Math.floor(Date.now() / 1000),
+      exp: Math.floor(Date.now() / 1000) + 604800
+    });
+
     localStorage.setItem(TOKEN_KEY, token);
     updateNav(user);
-    showMsg("Welcome back, " + (user.name || user.email.split("@")[0]) + "!", "success");
-    setTimeout(closeModal, 1200);
+    showMsg(`Welcome back, ${user.name || "Analyst"}! ✨`, "success");
+    setTimeout(closeModal, 1000);
   }
 
   async function handleSignUp(e) {
-    e.preventDefault(); clearMsg();
-    const name  = ($("signup-name")?.value || "").trim();
-    const email = ($("signup-email")?.value || "").trim().toLowerCase();
-    const pw    = $("signup-password")?.value || "";
-    if (!name || !email || !pw)               { showMsg("Please fill in all fields."); return; }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showMsg("Enter a valid email."); return; }
-    if (pw.length < 6)                         { showMsg("Password must be at least 6 characters."); return; }
+    e.preventDefault();
+    clearMsg();
+    const name = ($("signup-name")?.value || "").trim();
+    const identifier = ($("signup-identifier")?.value || "").trim();
+    const pw = $("signup-password")?.value || "";
+
+    if (!name || !identifier || !pw) {
+      showMsg("Please fill in all required fields.");
+      return;
+    }
+
+    const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(identifier);
+    const isPhone = /^[+]?[\d\s-]{8,15}$/.test(identifier);
+
+    if (!isEmail && !isPhone) {
+      showMsg("Enter a valid Email address or Phone number.");
+      return;
+    }
+
+    if (pw.length < 6) {
+      showMsg("Password must be at least 6 characters.");
+      return;
+    }
+
     const users = getUsers();
-    if (users.find(u => u.email === email))   { showMsg("This email is already registered."); return; }
-    const nu = { id: (crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36)),
-      name, email, pwHash: hashPw(pw), createdAt: new Date().toISOString() };
-    users.push(nu); saveUsers(users);
-    const token = await signJWT({ sub: nu.id, email: nu.email, name: nu.name,
-      iat: Math.floor(Date.now()/1000), exp: Math.floor(Date.now()/1000) + 604800 });
+    const exists = users.find(u =>
+      (u.identifier && u.identifier.toLowerCase() === identifier.toLowerCase()) ||
+      (u.phone && u.phone === identifier)
+    );
+
+    if (exists) {
+      showMsg("An account with this Email/Phone already exists.");
+      return;
+    }
+
+    const nu = {
+      id: crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36),
+      name,
+      identifier: isEmail ? identifier.toLowerCase() : "",
+      phone: isPhone ? identifier : "",
+      pwHash: hashPw(pw),
+      createdAt: new Date().toISOString()
+    };
+
+    users.push(nu);
+    saveUsers(users);
+
+    const token = await signJWT({
+      sub: nu.id,
+      identifier: nu.identifier || nu.phone,
+      name: nu.name,
+      iat: Math.floor(Date.now() / 1000),
+      exp: Math.floor(Date.now() / 1000) + 604800
+    });
+
     localStorage.setItem(TOKEN_KEY, token);
     updateNav(nu);
-    showMsg("Account created! Welcome, " + name + " \uD83C\uDF89", "success");
-    setTimeout(closeModal, 1400);
+    showMsg(`Account created! Welcome, ${name} 🎉`, "success");
+    setTimeout(closeModal, 1200);
+  }
+
+  // Simulated Google One-Click Auth
+  async function handleGoogleAuth() {
+    clearMsg();
+    showMsg("Connecting to Google...", "info");
+    setTimeout(async () => {
+      const googleUser = {
+        id: "google-" + Date.now().toString(36),
+        name: "Google User",
+        identifier: "user@gmail.com",
+        phone: "",
+        createdAt: new Date().toISOString()
+      };
+      const token = await signJWT({
+        sub: googleUser.id,
+        identifier: googleUser.identifier,
+        name: googleUser.name,
+        iat: Math.floor(Date.now() / 1000),
+        exp: Math.floor(Date.now() / 1000) + 604800
+      });
+      localStorage.setItem(TOKEN_KEY, token);
+      updateNav(googleUser);
+      showMsg("Signed in with Google! Welcome ✨", "success");
+      setTimeout(closeModal, 1000);
+    }, 700);
   }
 
   function toggleEye(inputId, btnId) {
     const inp = $(inputId), btn = $(btnId);
     if (!inp || !btn) return;
-    btn.addEventListener("click", () => { inp.type = inp.type === "password" ? "text" : "password"; });
+    btn.addEventListener("click", () => {
+      inp.type = inp.type === "password" ? "text" : "password";
+      btn.style.opacity = inp.type === "text" ? "1" : "0.6";
+    });
   }
 
   function init() {
-    if (btnOpen)    btnOpen.addEventListener("click",    () => openModal("signin"));
-    if (btnClose)   btnClose.addEventListener("click",   closeModal);
-    if (btnSignout) btnSignout.addEventListener("click", () => { localStorage.removeItem(TOKEN_KEY); updateNav(null); });
-    if (modal)      modal.addEventListener("click",      e => { if (e.target === modal) closeModal(); });
-    if (tabSignin)  tabSignin.addEventListener("click",  () => switchTab("signin"));
-    if (tabSignup)  tabSignup.addEventListener("click",  () => switchTab("signup"));
-    document.querySelectorAll(".auth-switch-link").forEach(l =>
-      l.addEventListener("click", () => switchTab(l.dataset.switch)));
+    const btnOpen = $("btn-auth-open");
+    const btnClose = $("auth-modal-close");
+    const btnSignout = $("btn-auth-signout");
+    const modal = $("auth-modal");
+    const tabSignin = $("tab-signin");
+    const tabSignup = $("tab-signup");
+    const formSignin = $("form-signin");
+    const formSignup = $("form-signup");
+    const btnGoogle = $("btn-google-auth");
+
+    if (btnOpen) btnOpen.addEventListener("click", () => openModal("signin"));
+    if (btnClose) btnClose.addEventListener("click", closeModal);
+    if (btnSignout) {
+      btnSignout.addEventListener("click", () => {
+        localStorage.removeItem(TOKEN_KEY);
+        updateNav(null);
+      });
+    }
+    if (modal) {
+      modal.addEventListener("click", e => { if (e.target === modal) closeModal(); });
+    }
+    if (tabSignin) tabSignin.addEventListener("click", () => switchTab("signin"));
+    if (tabSignup) tabSignup.addEventListener("click", () => switchTab("signup"));
+
+    document.querySelectorAll(".auth-switch-link").forEach(l => {
+      l.addEventListener("click", () => switchTab(l.dataset.switch));
+    });
+
     if (formSignin) formSignin.addEventListener("submit", handleSignIn);
     if (formSignup) formSignup.addEventListener("submit", handleSignUp);
+    if (btnGoogle) btnGoogle.addEventListener("click", handleGoogleAuth);
+
     toggleEye("signin-password", "eye-signin");
     toggleEye("signup-password", "eye-signup");
-    document.addEventListener("keydown", e => { if (e.key === "Escape" && modal?.classList.contains("active")) closeModal(); });
+
+    document.addEventListener("keydown", e => {
+      if (e.key === "Escape" && modal?.classList.contains("active")) closeModal();
+    });
+
     checkSession();
   }
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init);
-  } else { init(); }
+  } else {
+    init();
+  }
 })();
