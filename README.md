@@ -20,7 +20,7 @@ When submitting this project to your mentor or evaluation portal:
 
 | Link Type | URL / Reference | Purpose |
 | :--- | :--- | :--- |
-| **Live Tableau Dashboard & Story** | [Tableau Public Live Viz](https://public.tableau.com/app/profile/amit.mishra1535/viz/EV_Market_Analysis/EVMarketAnalysisDashboard) | Official interactive Tableau Public Story & Dashboard |
+| **Live Tableau Dashboard & Story (Demo)** | [Tableau Public Live Viz](https://public.tableau.com/app/profile/amit.mishra1535/viz/EV_Market_Analysis/EVMarketAnalysisDashboard) | Official interactive Tableau Public Story & Dashboard |
 | **GitHub Repository Link** | [https://github.com/aku797473/data-project1](https://github.com/aku797473/data-project1) | Complete project datasets, scripts, workbook, and documentation |
 | **Packaged Tableau Workbook** | [`EV_Market_Analysis.twbx`](EV_Market_Analysis.twbx) | Self-contained packaged workbook file with extract |
 | **Tableau Workbook File** | [`EV_Market_Analysis.twb`](EV_Market_Analysis.twb) | Tableau workbook file connecting to clean data |
