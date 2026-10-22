@@ -20,7 +20,7 @@ When submitting this project to your mentor or evaluation portal:
 
 | Link Type | URL Format | Purpose |
 | :--- | :--- | :--- |
-| **Live Demo Link** | `https://aku797473.github.io/data-project1/` | Live interactive Web Dashboard hosted on GitHub Pages |
+| **Live Demo Link** | `https://public.tableau.com/app/profile/amit.mishra1535/viz/EV_Market_Analysis/EVMarketAnalysisDashboard` | Live interactive Web Dashboard hosted on GitHub Pages |
 | **GitHub Repository Link** | `https://github.com/aku797473/data-project1` | Full source code, dataset, documentation, and scripts |
 | **Live Tableau Dashboard** | `https://public.tableau.com/app/profile/amit.mishra1535/viz/EV_Market_Analysis/EVMarketAnalysisDashboard` | Official Interactive Tableau Public Dashboard |
 | **Tableau Workbook File** | [`EV_Market_Analysis.twbx`](EV_Market_Analysis.twbx) | Packaged Tableau Public workbook file |
