@@ -11,7 +11,7 @@
 
 | Field on Portal | Exact Value / Link to Paste | Description |
 | :--- | :--- | :--- |
-| **Add Demo Link** | `https://public.tableau.com/app/profile/amit.mishra1535/viz/dataproject1_17922574721480/ElectricVehicleMarketAnalysisDashboard` | **Official Live Tableau Public Dashboard Link (Main Demo)** |
+| **Add Demo Link** | `https://public.tableau.com/app/profile/amit.mishra1535/viz/EV_Market_Analysis/EVMarketAnalysisDashboard` | **Official Live Tableau Public Dashboard Link (Main Demo)** |
 | **Add Github Link** | `https://github.com/aku797473/data-project1` | Public GitHub repository containing all source code, datasets & Tableau workbooks |
 | **Alternate Web Demo Link** | `https://aku797473.github.io/data-project1/` | GitHub Pages Web Dashboard (Bonus / Alternate) |
 
