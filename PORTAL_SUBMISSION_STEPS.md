@@ -13,6 +13,7 @@
 | :--- | :--- | :--- |
 | **Add Github Link** | `https://github.com/aku797473/data-project1` | Public GitHub repository containing all source code and datasets |
 | **Add Demo Link** | `https://aku797473.github.io/data-project1/` | Live interactive Web Dashboard hosted via GitHub Pages |
+| **Add Tableau Link** | `https://public.tableau.com/app/profile/amit.mishra1535/viz/dataproject1_17922574721480/ElectricVehicleMarketAnalysisDashboard` | Official Live Interactive Tableau Public Dashboard |
 
 ---
 
