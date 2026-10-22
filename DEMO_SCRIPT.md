@@ -7,9 +7,9 @@
 ---
 
 ### [0:00 - 0:30] Introduction & Problem Statement
-> *"Hello everyone! My name is [Your Name], and today I am excited to present my individual capstone data analytics project in the Transportation domain: the **Electric Vehicle (EV) Industry Analytics and Intelligence Platform**.*
+> *"Hello everyone! My name is **Amit Kumar Mishra**, and today I am excited to present my individual capstone data analytics project in the Transportation domain: the **Electric Vehicle (EV) Industry Analytics and Market Intelligence Platform**.*
 >
-> *The automotive market is transitioning toward zero-emission mobility. However, manufacturers, business analysts, and researchers face challenges in understanding battery adoption trends, geographical production hubs, price-to-range efficiencies, and real-world environmental impacts. In this project, I developed an end-to-end data pipeline, comprehensive exploratory analysis, and an interactive executive dashboard covering 1,200 vehicle models across 12 global automakers and 5 battery chemistries from 2021 to 2026."*
+> *The automotive industry is undergoing a historic transformation toward zero-emission mobility. In this project, I developed an end-to-end data pipeline, comprehensive exploratory analysis, and an interactive executive Tableau Story and Dashboard analyzing 1,200 EV models across 14 global automakers and 5 battery chemistries from 2021 to 2026."*
 
 ---
 

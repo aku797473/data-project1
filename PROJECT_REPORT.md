@@ -4,8 +4,7 @@
 **Student Name:** Amit Kumar Mishra  
 **Domain:** Data Analytics & Business Intelligence  
 **GitHub Repository:** [https://github.com/aku797473/data-project1](https://github.com/aku797473/data-project1)  
-**Live Interactive Web Application:** [https://aku797473.github.io/data-project1/](https://aku797473.github.io/data-project1/)  
-**Live Tableau Public Dashboard:** [https://public.tableau.com/app/profile/amit.mishra1535/viz/EV_Market_Analysis/EVMarketAnalysisDashboard](https://public.tableau.com/app/profile/amit.mishra1535/viz/EV_Market_Analysis/EVMarketAnalysisDashboard)  
+**Live Tableau Public Story & Dashboard:** [https://public.tableau.com/app/profile/amit.mishra1535/viz/EV_Market_Analysis/EVMarketAnalysisDashboard](https://public.tableau.com/app/profile/amit.mishra1535/viz/EV_Market_Analysis/EVMarketAnalysisDashboard)  
 
 ---
 
@@ -19,8 +18,8 @@ This project delivers an end-to-end data analytics and business intelligence sol
 The deliverables include:
 - An enterprise-grade, clean dataset with standardized units and verified KPI metrics.
 - An interactive **Tableau Public Dashboard & Story** delivering visual drill-downs across brands, driving ranges, battery capacities, and body categories.
-- A responsive, cloud-hosted **Interactive Web Dashboard** deployed on GitHub Pages.
-- A complete project management and testing lifecycle suite ensuring production reliability.
+- Packaged Tableau workbook (`EV_Market_Analysis.twbx`) with embedded data extracts.
+- A complete project management, data pipeline, and performance testing lifecycle suite.
 
 ### 1.2 Purpose
 The primary purpose of this project is to democratize data-driven decision making across the sustainable mobility ecosystem. Key objectives include:
@@ -283,7 +282,8 @@ All source code, data preprocessing pipelines, web applications, and Tableau wor
 - **High-Dimensional Market Dataset:** [`data/ev_market_data_cleaned.csv`](https://github.com/aku797473/data-project1/blob/main/data/ev_market_data_cleaned.csv)
 - **Data Dictionary:** [`data/data_dictionary.md`](https://github.com/aku797473/data-project1/blob/main/data/data_dictionary.md)
 
-### GitHub & Project Demo Links:
-- **Official GitHub Link:** [https://github.com/aku797473/data-project1](https://github.com/aku797473/data-project1)
-- **Official Interactive Web Demo:** [https://aku797473.github.io/data-project1/](https://aku797473.github.io/data-project1/)
+### Project Submission Links:
+- **Official GitHub Repository:** [https://github.com/aku797473/data-project1](https://github.com/aku797473/data-project1)
 - **Official Tableau Public Dashboard & Story:** [https://public.tableau.com/app/profile/amit.mishra1535/viz/EV_Market_Analysis/EVMarketAnalysisDashboard](https://public.tableau.com/app/profile/amit.mishra1535/viz/EV_Market_Analysis/EVMarketAnalysisDashboard)
+- **Packaged Tableau Workbook:** [`EV_Market_Analysis.twbx`](https://github.com/aku797473/data-project1/blob/main/EV_Market_Analysis.twbx)
+
