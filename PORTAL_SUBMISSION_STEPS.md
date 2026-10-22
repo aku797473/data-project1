@@ -3,6 +3,7 @@
 **Project Title:** Electric Vehicle Market Performance & Insights  
 **Domain:** Transportation & Sustainable Mobility  
 **Total Epics:** 8 Epics | **Total Tasks:** 14 Tasks | **Target Progress:** 100%  
+**Student / Project Author:** Amit Kumar Mishra  
 
 ---
 

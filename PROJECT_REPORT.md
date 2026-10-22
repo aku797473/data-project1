@@ -2,7 +2,9 @@
 
 **Project Domain:** Transportation & Sustainable Mobility  
 **Project Track:** Capstone Analytics & Business Intelligence  
-**Tools & Technologies:** Tableau Desktop / Tableau Public, Python (Flask), HTML5, Vanilla CSS, JavaScript, Chart.js  
+**Project Author:** Amit Kumar Mishra  
+**GitHub Repository:** [https://github.com/aku797473/data-project1](https://github.com/aku797473/data-project1)  
+**Live Demo:** [https://aku797473.github.io/data-project1/](https://aku797473.github.io/data-project1/)  
 **Evaluation Standard:** 100% Alignment with All 12 Rubric Criteria  
 
 ---

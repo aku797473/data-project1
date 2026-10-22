@@ -20,9 +20,12 @@ When submitting this project to your mentor or evaluation portal:
 
 | Link Type | URL Format | Purpose |
 | :--- | :--- | :--- |
-| **Live Demo Link** | `https://<YOUR_GITHUB_USERNAME>.github.io/<REPO_NAME>/` | Live interactive Web Dashboard hosted on GitHub Pages |
-| **GitHub Repository Link** | `https://github.com/<YOUR_GITHUB_USERNAME>/<REPO_NAME>` | Full source code, dataset, documentation, and scripts |
-| **Tableau Public Demo (Optional)** | `https://public.tableau.com/views/EV_Industry_Analytics/...` | Interactive Tableau Public workbook (see [TABLEAU_GUIDE.md](TABLEAU_GUIDE.md)) |
+| **Live Demo Link** | `https://aku797473.github.io/data-project1/` | Live interactive Web Dashboard hosted on GitHub Pages |
+| **GitHub Repository Link** | `https://github.com/aku797473/data-project1` | Full source code, dataset, documentation, and scripts |
+| **Tableau Workbook File** | [`EV_Market_Analysis.twbx`](EV_Market_Analysis.twbx) | Interactive Tableau Public workbook file |
+
+**Project Author:** Amit Kumar Mishra  
+**GitHub Profile:** [@aku797473](https://github.com/aku797473)
 
 ---
 

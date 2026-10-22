@@ -1,0 +1,134 @@
+﻿<?xml version='1.0' encoding='utf-8' ?>
+<workbook source-build='2022.4.1' source-platform='win' version='18.1' xmlns:user='http://www.tableausoftware.com/xml/user'>
+  <datasources>
+    <datasource caption='EV Market Data' inline='true' name='federated.1' version='18.1'>
+      <connection class='federated'>
+        <named-connections>
+          <named-connection caption='ev_market_data' name='textscan.1'>
+            <connection class='textscan' directory='data' filename='ev_market_data.csv' />
+          </named-connection>
+        </named-connections>
+        <relation name='ev_market_data.csv' table='[ev_market_data.csv]' type='table' />
+      </connection>
+      <aliases enabled='yes' />
+      <column caption='Category' datatype='string' name='[Vehicle_Category]' role='dimension' type='nominal' />
+      <column caption='Units Sold' datatype='integer' name='[Units_Sold_Annual]' role='measure' type='quantitative' />
+      <column caption='Manufacturer' datatype='string' name='[Manufacturer]' role='dimension' type='nominal' />
+      <column caption='Annual Revenue' datatype='integer' name='[Annual_Revenue_USD]' role='measure' type='quantitative' />
+      <column caption='Driving Range' datatype='integer' name='[Driving_Range_km]' role='measure' type='quantitative' />
+      <column caption='Base Price' datatype='integer' name='[Base_Price_USD]' role='measure' type='quantitative' />
+      <column caption='Battery Tech' datatype='string' name='[Battery_Technology]' role='dimension' type='nominal' />
+      <column caption='CO2 Offset' datatype='real' name='[CO2_Offset_Tons_Annual]' role='measure' type='quantitative' />
+      <column caption='Customer Rating' datatype='real' name='[Customer_Rating]' role='measure' type='quantitative' />
+      <column caption='Country' datatype='string' name='[Manufacturing_Country]' role='dimension' type='nominal' />
+      <column caption='Year' datatype='integer' name='[Year]' role='dimension' type='ordinal' />
+    </datasource>
+  </datasources>
+  <worksheets>
+    <worksheet name='Category Sales'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='EV Market Data' name='federated.1' />
+          </datasources>
+          <aggregation value='true' />
+        </view>
+        <style />
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+          </pane>
+        </panes>
+        <rows>[federated.1].[none:Vehicle_Category:nk]</rows>
+        <cols>[federated.1].[sum:Units_Sold_Annual:qk]</cols>
+      </table>
+    </worksheet>
+    <worksheet name='Manufacturer Market Share'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='EV Market Data' name='federated.1' />
+          </datasources>
+          <aggregation value='true' />
+        </view>
+        <style />
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+          </pane>
+        </panes>
+        <rows>[federated.1].[none:Manufacturer:nk]</rows>
+        <cols>[federated.1].[sum:Units_Sold_Annual:qk]</cols>
+      </table>
+    </worksheet>
+    <worksheet name='Battery Tech Trend'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='EV Market Data' name='federated.1' />
+          </datasources>
+          <aggregation value='true' />
+        </view>
+        <style />
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Line' />
+          </pane>
+        </panes>
+        <rows>[federated.1].[sum:Units_Sold_Annual:qk]</rows>
+        <cols>[federated.1].[none:Year:ok]</cols>
+      </table>
+    </worksheet>
+    <worksheet name='Price vs Range'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='EV Market Data' name='federated.1' />
+          </datasources>
+          <aggregation value='true' />
+        </view>
+        <style />
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Circle' />
+          </pane>
+        </panes>
+        <rows>[federated.1].[avg:Driving_Range_km:qk]</rows>
+        <cols>[federated.1].[avg:Base_Price_USD:qk]</cols>
+      </table>
+    </worksheet>
+  </worksheets>
+  <windows>
+    <window class='worksheet' maximized='true' name='Category Sales'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='31'>
+            <card type='columns' />
+          </strip>
+          <strip size='31'>
+            <card type='rows' />
+          </strip>
+        </edge>
+      </cards>
+    </window>
+  </windows>
+</workbook>
