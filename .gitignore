@@ -11,3 +11,6 @@ Desktop.ini
 
 # Logs
 *.log
+
+# DOCX files (replaced by PDFs)
+*.docx
